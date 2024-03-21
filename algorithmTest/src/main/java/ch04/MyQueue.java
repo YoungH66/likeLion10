@@ -22,7 +22,7 @@ public class MyQueue {
             queueArr[rear] = item;
             // rear++;  //선형큐 이부분을 수정해서 원형 큐로 변환
             rear = (rear+1) % capacity;
-            
+
             /*rear++;
             if(rear >= capacity)
                 rear = 0;*/
