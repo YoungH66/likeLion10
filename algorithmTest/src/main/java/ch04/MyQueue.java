@@ -78,5 +78,10 @@ public class MyQueue {
         q.enq(10);
         q.enq(11);
         q.enq(12);      // 큐에 여유공간 없음 정상출력
+
+        // 큐를 전부 방출
+        do{
+            System.out.println(q.deq());
+        }while(!q.isEmpty());
     }
 }
