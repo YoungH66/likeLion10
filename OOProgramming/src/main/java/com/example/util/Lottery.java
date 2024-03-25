@@ -7,20 +7,22 @@ public class Lottery {
     // 당첨 번호가 중복되지 않은 무작위 정수를 받아야 하도록 수정 필요
     private int max = 45;
     private int cap = 6;
-    int[] hitArr = new int[6];
-    int[] tryArr = new int[6];
+    private int[] hitArr = new int[cap];
+    private int[] tryArr = new int[cap];
 
     // 당첨 번호 생성
     public void hitArrGen(){
-        for(int i = 0; i < cap; i++)
-            hitArr[i] = (int) (Math.random() * 45 + 1);
+        int[] temp = new int[cap];
+        for(int i = 0; i < cap; i++){
+            hitArr[i] = (int) (Math.random() * max + 1);
+        }
         Arrays.sort(hitArr);
     }
 
     // 자동
     public void tryArrGen(){
         for(int i = 0; i < cap; i++)
-            tryArr[i] = (int) (Math.random() * 45 + 1);
+            tryArr[i] = (int) (Math.random() * max + 1);
         Arrays.sort(tryArr);
 
         compareArr();
