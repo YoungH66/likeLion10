@@ -4,33 +4,46 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Lottery {
-    // 당첨 번호가 중복되지 않은 무작위 정수를 받아야 하도록 수정 필요
     private int max = 45;
     private int cap = 6;
     private int[] hitArr = new int[cap];
     private int[] tryArr = new int[cap];
-
     // 당첨 번호 생성
     public void hitArrGen(){
-        int[] temp = new int[cap];
+        int num;
+        Arrays.fill(hitArr, -1);    // 초기화
         for(int i = 0; i < cap; i++){
-            hitArr[i] = (int) (Math.random() * max + 1);
+            num = (int) (Math.random() * max + 1);
+            if(!isExit(hitArr,num, i))
+                hitArr[i] = num;
         }
         Arrays.sort(hitArr);
-    }
-
-    // 자동
-    public void tryArrGen(){
-        for(int i = 0; i < cap; i++)
-            tryArr[i] = (int) (Math.random() * max + 1);
-        Arrays.sort(tryArr);
-
-        compareArr();
     }
 
     // 당첨 번호 출력
     public void popHitArr(){
         System.out.println("이번 로또 당첨 번호는 ... " + Arrays.toString(hitArr));
+    }
+
+    boolean isExit(int[] arr, int num, int idx){
+        for(int i = 0; i < idx; i++)
+            if(arr[i] == num)
+                return true;
+        return false;
+    }
+
+    // 자동
+    public void tryArrGen(){
+        int num;
+        Arrays.fill(tryArr, -1);    // 초기화
+        for(int i = 0; i < cap; i++){
+            num = (int) (Math.random() * max + 1);
+            if(!isExit(tryArr,num, i))
+                tryArr[i] = num;
+        }
+        Arrays.sort(tryArr);
+
+        compareArr();
     }
 
     // 수동 입력
