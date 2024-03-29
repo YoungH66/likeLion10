@@ -1,0 +1,50 @@
+/*@import url(reset.css);*/
+* {
+  padding: 0;
+  margin: 0;
+}
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  width: 1080px;
+  margin: 0px auto;
+  background-color: #755139;
+}
+
+header,
+section,
+main,
+footer {
+  margin: 0px auto;
+  background-color: #d4b996;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+header {
+  height: 90px;
+  width: 1080px;
+  margin-top: 10px;
+}
+
+header ul {
+  float: right;
+  margin-top: 20px;
+}
+
+header ul li {
+  display: inline-block;
+  width: 85px;
+  background-color: #75513998;
+  color: #d4b996;
+  text-align: left;
+  padding: 2px;
+  box-shadow: 0px 4px 3px -2px grey;
+  margin-right: 1px;
+}
