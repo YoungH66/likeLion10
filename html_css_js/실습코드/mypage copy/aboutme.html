@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AboutMe</title>
+    <link rel="stylesheet" href="css/yorha.css" />
+    <link rel="stylesheet" href="css/aboutme.css" />
+  </head>
+  <body>
+    <h1>TEC</h1>
+    <header>
+      <nav>
+        <ul>
+          <figure>
+            <img
+              src="img/LIKELION_brandsymbol_black.png"
+              alt="likeLion Logo"
+              class="logo"
+            />
+            <button>home</button>
+            <button>about me</button>
+            <button onclick="location.href='mygallery.html'">gallery</button>
+            <button>to-do</button>
+          </figure>
+        </ul>
+      </nav>
+    </header>
+    <section class="main">
+      <ul>
+        <li>
+          <h2>Main2</h2>
+          <p>
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quia sunt
+            dignissimos amet, sequi minima quaerat corporis cum asperiores,
+            fugit expedita beatae animi quam ad harum provident enim quidem modi
+            nam.
+          </p>
+        </li>
+        <li>
+          <h2>profile</h2>
+          <ul class="profile">
+            <li>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad,
+                placeat iure ut repellat eaque molestias consequuntur id itaque
+                facilis sint pariatur cumque autem odio omnis laudantium
+                inventore nulla asperiores consectetur!
+              </p>
+              <a href="https://github.com/YoungH66">github</a>
+            </li>
+            <li>
+              <p>
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Libero
+                voluptatibus sunt odio ex harum quae, quaerat impedit laudantium
+                ut molestiae eius qui sint porro nostrum. Dolor totam ullam ea
+                vero.
+              </p>
+              <a
+                href="https://techit.education/my/courses/detail/kdt-backendj-10th/board"
+                >techit</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li>
+          <h2>Main3</h2>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic est
+            earum maiores quaerat ducimus explicabo praesentium nisi excepturi
+            odit. Suscipit repellendus rem iusto itaque iure nostrum saepe
+            reiciendis? Possimus, libero.
+          </p>
+        </li>
+        <li>
+          <h2>Code</h2>
+          <pre>import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        
+        //queue를 선언한다.
+        Queue<Integer> q = new LinkedList<>();
+
+        int N = in.nextInt();
+        int K = in.nextInt();
+
+        //N번까지 queue에 추가.
+        for(int i =1;i<=N;i++) {
+            q.add(i);
+        }
+
+        //String을 계속 추가, 수정해야하므로 StringBuilder 선언 !
+        StringBuilder people = new StringBuilder();
+        people.append('<');
+
+        //queue에서 다 뽑을 때까지 계속 돌린다.
+        while (q.size()>1) {
+
+            //K의 배수가 아닌 값은 뽑고 다시 넣는다.
+            for(int i =0; i<K-1;i++) {
+                int value = q.poll();
+                q.offer(value);
+            }
+            //뽑은 값을 String에 추가
+            people.append(q.poll()).append(", ");
+        }
+
+        //마지막에 '>'로 닫아주고 출력
+        people.append(q.poll()).append('>');
+        System.out.println(people);
+    }
+}</pre>
+        </li>
+      </ul>
+    </section>
+    <footer>
+      <ul>
+        <input type="email" value="rladudgns8936@gmail.com" />
+        <input type="url" value="https://github.com/YoungH66" />
+      </ul>
+    </footer>
+  </body>
+</html>
