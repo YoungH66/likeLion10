@@ -51,5 +51,6 @@ public class SortExam {
 
         selectionSort(arr);
         System.out.println("SORTED ARRAY(SELECTION) : " + Arrays.toString(arr));
+        // test0328과 비교
     }
 }
