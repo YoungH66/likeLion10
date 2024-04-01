@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="test"></div>
+    <script>
+      console.log(v1);
+      // 변수 상수
+      // var -- 변수, 상수 구분없이 사용했었지만, ES6이후 사용 지양한다.
+      // let -- 변수, const -- 상수
+      // let testDiv = document.getElementById("test");
+      // testDiv.innerHTML = "Hello JS";
+      var v1 = 0;
+
+      var v1 = 10; // 중복선언됨.
+      // ES6에서 var 보다는 let, const를 사용 권장
+      // 1. var는 중복선언이 가능하기 때문에 권장되지 않음
+      // 2. var는 호이스팅 된다.
+      // 3. 변수의 scope가 var 단위이다.
+
+      // let은 중복선언이 되지 않기때문에 아래는 interPrinter 오류
+      // let l1 = 0;
+      // let l1 = 10;
+      // let은 호이스팅 되지 않는다.
+      // let은 scope가 block 단위
+
+      let let1 = 0;
+
+      console.log(v1);
+    </script>
+  </body>
+</html>
