@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let a = 10;
+      let b = "test";
+
+      // 자바스크립트의 함수는 일급객체로 취급한다.
+      // 즉 함수를 객체처럼 취급한다.(함수도 타입)
+      function test() {
+        console.log("test");
+      }
+
+      // 함수() 와 함수는 다르다.
+      // 함수를 객체로 받으면 함수 자체를 가르킨다.
+      // 함수()를 객체로 받으면 함수 전체를 가르킨다.(해당 함수가 반환하는 값을 가진다.)
+      // let c = test;
+
+      function c(abc) {
+        // 함수의 매개변수로 함수를 받을 수 도 있다.
+        abc();
+      }
+
+      function f(abc) {
+        return abc;
+      }
+
+      c(test);
+      let bb = f(test);
+      console.log(bb);
+      let bbb = c(test);
+    </script>
+  </body>
+</html>
