@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const number = {
+        _a: 1,
+        _b: 2,
+
+        get a() {
+          console.log("get a() 함수실행");
+          return this._a;
+        },
+        set a(val) {
+          console.log("set a() 함수실행");
+          this._a = val;
+        },
+
+        get sum() {
+          console.log("get sum() 함수실행");
+          return this.a + this.b;
+        },
+      };
+      number.a = 20;
+      console.log(number.a);
+      console.log(number.b);
+    </script>
+  </body>
+</html>

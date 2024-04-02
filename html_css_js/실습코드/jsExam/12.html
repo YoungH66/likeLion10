@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>배열</title>
+  </head>
+  <body>
+    <script>
+      const array = [1, 2, 3, 4, 5];
+
+      console.log(array);
+      console.log(array[0]);
+
+      array[2] = "test";
+      console.log(array);
+
+      const arr2 = new Array(10); // 매개 변수가 하나만 들어가면, 그 만큼의 크기의 배열 생성
+      console.log(arr2);
+
+      const arr3 = new Array(10, 2); // 매개 변수가 하나 이상이면, 그 값이 들어감.
+      console.log(arr3);
+
+      array[0] = { name: "kan" };
+      console.log(array);
+
+      array.push(10);
+      console.log(array);
+
+      array.push(() => console.log("hello"));
+      console.log(array);
+
+      // array에 들어있는 함수 객체 호출
+      array[6]();
+
+      const [a, b, c, d, e, f] = array; // 배열 비구조할당
+      console.log(a);
+      console.log(b);
+      console.log(c);
+      console.log(d);
+      console.log(e);
+      console.log(f);
+    </script>
+  </body>
+</html>
