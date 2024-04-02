@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const users = [
+        { name: "Alice", age: 25 },
+        { name: "Bob", age: 30 },
+        { name: "Charlie", age: 28 },
+        { name: "Dave", age: 35 },
+      ];
+      // 여기에 코드를 작성하세요.
+      let tarArr = [];
+
+      for (let i in users) if (users[i].age >= 30) tarArr.push(users[i].name);
+
+      for (let i in tarArr) console.log(tarArr[i]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function sumOf(numbers) {
+        let sum = 0;
+        for (let i = 0; i < numbers.length; i++) {
+          sum += numbers[i];
+        }
+        return sum;
+      }
+
+      const sum2 = function (numbers) {
+        let sum = 0;
+        for (let i = 0; i < numbers.length; i++) {
+          sum += numbers[i];
+        }
+        return sum;
+      };
+
+      const sum3 = (numbers) => {
+        let sum = 0;
+        for (let i = 0; i < numbers.length; i++) {
+          sum += numbers[i];
+        }
+        return sum;
+      };
+
+      const result = sumOf([1, 2, 3, 4, 5]);
+      console.log(result);
+
+      const result2 = sum2([1, 2, 3, 4, 5]);
+      console.log(result2);
+
+      const result3 = sum3([1, 2, 3, 4, 5]);
+      console.log(result2);
+    </script>
+  </body>
+</html>
