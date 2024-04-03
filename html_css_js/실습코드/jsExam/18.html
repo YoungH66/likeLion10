@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function Animal(type, name, sound) {
+        this.type = type;
+        this.name = name;
+        this.sound = sound;
+        this.say = function () {
+          console.log(this.sound);
+        };
+      }
+
+      const dog = new Animal("Dog", "button", "woff");
+      const cat = new Animal("Cat", "Nabi", "miyaoo");
+
+      dog.say();
+      cat.say();
+
+      cat.hi = function () {
+        console.log("nyaa");
+      };
+
+      // 자바 스크립트는 객체 생성자로 만들어 졌을때, 만들어진 필드와 메서드가 저장되는 공간이 달라
+      // 이후 객체에 새로운 함수를 수정할 수 있다.
+      cat.hi();
+      // dog.hi();
+
+      cat.age = 10;
+      console.log(cat.age);
+    </script>
+  </body>
+</html>
