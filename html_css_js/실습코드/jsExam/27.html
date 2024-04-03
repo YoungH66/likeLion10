@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>비동기</title>
+  </head>
+  <body>
+    <script>
+      function work(callback) {
+        // setTimeout를 호출하는것으로 작업을 마쳤기때문에 task done 출력
+        // setTimeout을 기다리지 않고 다음 작업 진행
+        // setTimeout이 마지막으로 출력됨.
+        console.log("work start@@");
+        setTimeout(() => {
+          //const start = Date.now();
+          //for (let i = 0; i < 1000000000; i++) {}
+          //const end = Date.now();
+          //console.log(end - start + "ms");
+          console.log("작업완료");
+          callback();
+        }, 0);
+        // console.log("task done..");
+      }
+
+      console.log("start.");
+      work(() => {
+        console.log("task done..");
+
+        console.log("end. next work.");
+      });
+      // console.log("end. next work.");
+    </script>
+  </body>
+</html>
