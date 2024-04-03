@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function work() {
+        setTimeout(() => {
+          console.log("callback3");
+          setTimeout(() => {
+            console.log("callback4");
+          }, 0);
+        }, 0);
+      }
+
+      console.log("stack1");
+      work();
+      setTimeout(console.log("stack2"), 0);
+      setTimeout(() => {
+        console.log("callback5");
+        setTimeout(() => {
+          console.log("callback6");
+        });
+      }, 0);
+    </script>
+  </body>
+</html>

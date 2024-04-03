@@ -8,6 +8,7 @@
   <body>
     <script>
       function work() {
+        // Date.now는 현재 시간을 숫자 형태로 가져오는 자바스크립트 내장 함수
         const start = Date.now();
         for (let i = 0; i < 1000000000; i++) {}
         const end = Date.now();
@@ -20,6 +21,7 @@
         console.log("hi");
       }
 
+      // 몇 초 이후에 실행
       setTimeout(hi, 1000);
 
       console.log("dummy");

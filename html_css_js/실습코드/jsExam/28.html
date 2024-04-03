@@ -22,6 +22,13 @@
 
       console.log("work 시작");
       work();
+      //setTimeout을 사용했지만, 함수가 인자로 오지 않고 출력만 왔기 때문에 그냥 출력
+      // 만약 의도대로 작동하게 하기 위해선
+      // setTimeout(() => {
+      // console.log("work end");
+      // }, 0);
+      // 와 같은식으로 해야한다.
+
       setTimeout(console.log("work끝"), 0);
     </script>
   </body>
