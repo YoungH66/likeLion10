@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2 id="number">0</h2>
+    <div>
+      <button id="increase">+1</button>
+      <button id="decrease">-1</button>
+    </div>
+
+    <script>
+      const num = document.getElementById("number");
+      const inc = document.getElementById("increase");
+      const dec = document.getElementById("decrease");
+
+      //console.log(num.innerText);
+      //console.log(inc.offsetTop);
+      //console.log(dec.id);
+
+      inc.onclick = () => {
+        console.log("increase button clcik");
+        const curr = parseInt(num.innerText, 10);
+        num.innerText = curr + 1;
+      };
+      dec.onclick = () => {
+        console.log("decrease button click");
+        const curr = parseInt(num.innerText, 10);
+        num.innerText = curr - 1;
+      };
+    </script>
+  </body>
+</html>
