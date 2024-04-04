@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <ul>
+      <li>todo 1</li>
+      <li>todo 2</li>
+      <li>todo 3</li>
+      <li>todo 4</li>
+      <li>todo 5</li>
+    </ul>
+
+    <label for="todo">input to do</label>
+    <input type="text" id="todo-value" />
+    <button id="todoBtn">post work</button>
+
+    <script>
+      const todoBtn = document.getElementById("todoBtn");
+      const todo = document.getElementById("todo-value");
+      const ul = document.querySelector("ul");
+      todoBtn.addEventListener("click", () => {
+        const li = document.createElement("li");
+        const text = document.createTextNode(todo.value); // 아직 li와 text가 합쳐지진 않았다.
+        li.appendChild(text); // li내부로 text 합치기
+        ul.appendChild(li); // ul내부로 li 합치기
+
+        //todo.value 비우기
+        todo.value = "";
+      });
+
+      ul.addEventListener("click", (e) => {
+        alert(e.target.innerText);
+      });
+    </script>
+  </body>
+</html>

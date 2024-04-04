@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>event exam</title>
+  </head>
+  <body>
+    <form action="06.html" method="get" id="form">
+      name : <input type="text" name="name" id="name" /><br />
+      password : <input type="password" name="password" id="password" /><br />
+      password confirm :
+      <input type="password" name="checkPassword" id="checkPassword" /><br />
+      <input type="submit" value="등록" />
+    </form>
+
+    <script>
+      // 이름을 잘 입력했는지 체크
+      // 비밀번호 두 개가 일치하는지 체크
+
+      // submit <-- 이벤트 이름
+      // input.value -- input(얻어온 요소)에 값을 꺼낼 수 있다.
+      const form = document.getElementById("form");
+      const id = document.getElementById("name").value;
+      const pass = document.getElementById("password").value;
+      const passChk = document.getElementById("checkPassword").value;
+
+      function verifyData(event) {
+        event.preventDefault();
+
+        if (id === "") {
+          alert("input id");
+          return;
+        } else if (pass === "") {
+          alert("input pass");
+          return;
+        } else if (passChk === "") {
+          alert("input pass chk");
+          return;
+        } else if (pass !== passChk) {
+          alert("pass doesn't match");
+          return;
+        } else {
+          alert("success");
+          return;
+        }
+
+        form.submit();
+      }
+
+      form.addEventListener("submit", verifyData);
+    </script>
+  </body>
+</html>
