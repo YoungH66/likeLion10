@@ -20,6 +20,7 @@
 
       // submit <-- 이벤트 이름
       // input.value -- input(얻어온 요소)에 값을 꺼낼 수 있다.
+      /*
       const form = document.getElementById("form");
       const id = document.getElementById("name").value;
       const pass = document.getElementById("password").value;
@@ -48,6 +49,33 @@
         form.submit();
       }
 
+      form.addEventListener("submit", verifyData);*/
+      const form = document.getElementById("form");
+
+      function verifyData(e) {
+        e.preventDefault();
+
+        const id = document.getElementById("name").value;
+        const pass = document.getElementById("password").value;
+        const passChk = document.getElementById("checkPassword").value;
+
+        if (id === "") {
+          alert("input id");
+          return;
+        } else if (pass === "") {
+          alert("input pass");
+          return;
+        } else if (pass === "") {
+          alert("input pass chk");
+          return;
+        } else if (pass !== passChk) {
+          alert("pass doesn't match");
+          return;
+        } else {
+          alert("success");
+          form.submit();
+        }
+      }
       form.addEventListener("submit", verifyData);
     </script>
   </body>

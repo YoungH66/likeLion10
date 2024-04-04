@@ -17,6 +17,7 @@
         */
         const ranNum1 = parseInt(Math.random() * 256);
         const ranNum2 = parseInt(Math.random() * 256);
+        //Math.floor가 더 표준적인 방법인듯 함
         const ranNum3 = Math.floor(Math.random() * 256);
         console.log("r : " + ranNum1 + "  g : " + ranNum2 + "  b : " + ranNum3);
         document.body.style.backgroundColor = `rgb(${ranNum1}, ${ranNum2}, ${ranNum3})`;
