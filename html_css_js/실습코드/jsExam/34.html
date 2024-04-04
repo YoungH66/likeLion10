@@ -3,28 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>async/await</title>
   </head>
   <body>
     <script>
-      function work() {
-        setTimeout(() => {
-          console.log("callback3");
-          setTimeout(() => {
-            console.log("callback4");
-          }, 0);
-        }, 0);
+      function sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
       }
 
-      console.log("stack1");
-      work();
-      setTimeout(console.log("stack2"), 0);
-      setTimeout(() => {
-        console.log("callback5");
-        setTimeout(() => {
-          console.log("callback6");
-        });
-      }, 0);
+      async function makeError() {
+        await sleep(1000);
+        const error = new Error();
+        throw error;
+      }
+
+      async function process() {
+        try {
+          await makeError();
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      // async 안쓰면 이렇게 했어야 한다.
+      //function process() {
+      //  console.log("heelo");
+      //  sleep(3000).then(() => {
+      //    console.log("bye");
+      //  });
+      //}
+      console.log("before call process");
+      process().then(() => {
+        console.log("done");
+      });
+      console.log("after call process");
     </script>
   </body>
 </html>
