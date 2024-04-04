@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="btn1">click1</button>
+    <button>click2</button>
+
+    <script>
+      function changeColor(event) {
+        console.log(event);
+        console.log("event target : " + this);
+        console.log(this);
+        console.log(event.target); // function 으로 함수를 생성했을때 this와 같은 값을 얻어냄.
+
+        /* 사용자 입력을 받아 색상 변경
+        const color = prompt("input color.");
+        document.body.style.backgroundColor = color;
+        */
+        document.body.style.backgroundColor = "rgb(3, 3, 3)";
+      }
+
+      //const btn1 = document.getElementById("btn1");
+
+      // 태그 이름으로 가르키기
+      const btn2 = document.getElementsByTagName("button");
+      // querySelector는 처음 오는것만 가르킨다.
+      // const btn2 = document.querySelector("button");
+      /* querySelectorAll로 가르키기
+      const btn2 = document.querySelectorAll("button");*/
+      for (let i = 0; i < btn2.length; i++) {
+        btn2[i].addEventListener("click", changeColor);
+      }
+
+      //btn1.onclick = () => {
+      //  changeColor();
+      //};
+      btn2.onclick = () => {
+        changeColor();
+      };
+    </script>
+  </body>
+</html>

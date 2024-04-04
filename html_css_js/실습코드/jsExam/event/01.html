@@ -17,7 +17,9 @@
       //함수에 ()를 넣으면 이벤트가 일어나기 전에 실행된다.
       // document.addEventListener("click", hi);
       const btn = document.getElementById("btn");
-      btn.addEventListener("click", hi);
+      // btn.addEventListener("click", hi);
+
+      btn.addEventListener("click", () => alert("hello"));
     </script>
   </body>
 </html>
