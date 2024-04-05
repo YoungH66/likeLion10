@@ -7,7 +7,15 @@
   </head>
   <body>
     <h1>안녕</h1>
-    hello, world! <br />22
+    hello, world! <br />
+    <button id="btn">딸깍!</button>
+
+    <script>
+      const btn = document.getElementById("btn");
+      btn.onclick = () => {
+        console.log("click!");
+      };
+    </script>
   </body>
 </html>
 <!--xml -- 웰폼드..     반드시 시작과 끝태그를 가져야한다.
