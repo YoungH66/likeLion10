@@ -6,3 +6,14 @@ article {
 .question {
   display: none;
 }
+
+.result {
+  display: none;
+}
+
+#img {
+  width: 300px;
+  /* height: 300px; */
+  height: auto;
+  margin: 0 auto;
+}
