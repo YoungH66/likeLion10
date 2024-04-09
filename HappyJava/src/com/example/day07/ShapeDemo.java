@@ -10,5 +10,10 @@ public class ShapeDemo {
 
         Shape circle = new Circle(30);
         System.out.printf("원의 너비: %.3f\n",circle.calculateArea());
+
+        Drawable drawable = new Rectangle(10, 5);
+        drawable.draw();
+
+        triangle.draw();
     }
 }

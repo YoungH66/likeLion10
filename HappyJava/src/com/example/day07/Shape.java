@@ -1,10 +1,10 @@
 package com.example.day07;
 
-abstract public class Shape {
+abstract public class Shape implements Drawable{
     abstract public double calculateArea();
 }
 
-class Triangle extends Shape {
+class Triangle extends Shape implements Drawable{
     private double x;
     private double y;
     public Triangle(double x, double y) {
@@ -14,12 +14,12 @@ class Triangle extends Shape {
 
     @Override
     public double calculateArea() {
-        double area = (x * y);
+        double area = (x * y) /2;
         return area;
     }
 }
 
-class Rectangle extends Shape {
+class Rectangle extends Shape implements Drawable{
     private double x;
     private double y;
     public Rectangle(double x, double y) {
@@ -29,8 +29,12 @@ class Rectangle extends Shape {
 
     @Override
     public double calculateArea() {
-        double area = (x * y) / 2;
+        double area = (x * y);
         return area;
+    }
+
+    public void draw() {
+        System.out.println("this shape is Rectangle");
     }
 }
 

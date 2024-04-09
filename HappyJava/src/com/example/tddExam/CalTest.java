@@ -2,11 +2,11 @@ package com.example.tddexam;
 
 public class CalTest {
     public static void main(String[] args) {
-        Calculator cal = new Calculator();
+       // Calculator cal = new Calculator();
         //plus 테스트
-        int result = cal.plus(87,25);
+       // int result = cal.plus(87,25);
 //
-        System.out.println(result);
+  //      System.out.println(result);
 //
 //        System.out.println(cal.plus(3,5));
 
