@@ -1,6 +1,7 @@
 package com.example.day09;
 
 import java.util.Arrays;
+import java.util.Calendar;
 
 public class SystemExam01 {
     public static void main(String[] args) {
@@ -20,5 +21,8 @@ public class SystemExam01 {
         int[] destArray = new int[sourceArray.length];
         System.arraycopy(sourceArray, 0, destArray, 0, sourceArray.length);
         System.out.println("destArray: " + Arrays.toString(destArray));
+
+        System.out.println();
+        System.out.println(Calendar.getInstance());
     }
 }
