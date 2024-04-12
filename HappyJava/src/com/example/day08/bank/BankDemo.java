@@ -28,7 +28,7 @@ public class BankDemo {
             System.out.println("Withdrawal successful");
             System.out.println("Balance: " + account.getBalance() + "\n");
 
-            // banker.approveWithdrawal(account, 10000);   // 예외 케이스
+            banker.approveWithdrawal(account, 10000);   // 예외 케이스
 
             Account account2 = bank.getAccount("1234-1234-12345");
             // 계좌 정보 조회
