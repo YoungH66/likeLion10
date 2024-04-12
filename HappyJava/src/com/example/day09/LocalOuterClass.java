@@ -17,6 +17,6 @@ public class LocalOuterClass {
     public static void main(String[] args) {
         LocalOuterClass localOuterClass = new LocalOuterClass();
         localOuterClass.outerMethod();
-        
+
     }
 }
