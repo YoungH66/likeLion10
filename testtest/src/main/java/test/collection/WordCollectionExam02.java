@@ -25,6 +25,7 @@ public class WordCollectionExam02 {
         System.out.println("Enter words...");
         System.out.println("Enter 'quit' to exit...");
 
+        // removeQuit 메소드를 따로 생성하지 않고 반복문을 끝내면 된다.
         while (true) {
             System.out.print("Enter word: ");
             String input = sc.nextLine();
@@ -48,6 +49,8 @@ public class WordCollectionExam02 {
 
     public static int numberOfLetters(List<String> wordList) {
         int count = 0;
+        // 단어 하나씩 돌면서 문자개수를 세는거보다
+        // 그냥 한 단어의 길이를 더하면 된다.
         for (String word : wordList) {
             count += word.length();
         }
