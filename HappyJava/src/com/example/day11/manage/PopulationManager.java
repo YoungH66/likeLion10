@@ -7,19 +7,31 @@ public class PopulationManager {
     Map<String, Integer> population = new HashMap<>();
 
     void addOrUpdateCity(String city, int population) {
-        System.out.println("데이터 입력 성공");
-        this.population.put(city, population);
-        displayPopulation(city);
+        System.out.println("데이터 입력 city: " + city + " population: " + population);
+        if(this.population.containsKey(city)) {
+            System.out.println("이미 존재하는 도시입니다. 인구수를 수정합니다.");
+            this.population.replace("city", population);
+        }else{
+            this.population.put(city, population);
+        }
         System.out.println();
     }
 
     void removeCity(String city) {
+        if(!this.population.containsKey(city)) {
+            System.out.println("해당 데이터가 없습니다.");
+            return;
+        }
         System.out.println("해당 데이터를 삭제했습니다.");
         this.population.remove(city);
         System.out.println();
     }
 
     void displayPopulation(String city) {
+        if(!this.population.containsKey(city)) {
+            System.out.println("해당 데이터가 없습니다.");
+            return;
+        }
         System.out.println("해당 도시 인구수 정보");
         System.out.println("city: " + city + ", population: " + this.population.get(city));
         System.out.println();
