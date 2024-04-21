@@ -8,12 +8,18 @@ public class etc0419 {
             FileOutputStream fos = new FileOutputStream("do.txt");
             FileWriter fw = new FileWriter("do1.txt");){
             String line;
-            while(!(line = br.readLine()).equals("exit")){
-                fos.write(line.getBytes());
-            }
-            while(!(line = br.readLine()).equals("exit")){
+//            while(!(line = br.readLine()).equals("exit")){
+//                fos.write(line.getBytes());
+//            }
+            System.out.println("Input any words..");
+            System.out.println("'exit' to quit");
+            do{
+                System.out.print("Enter a content: ");
+                line = br.readLine();
                 fw.write(line + "\r\n");
             }
+            while(!line.equals("exit"));
+
         }catch (IOException e){
             e.printStackTrace();
         }
