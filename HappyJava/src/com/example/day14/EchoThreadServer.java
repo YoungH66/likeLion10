@@ -41,6 +41,12 @@ class EchoThread extends Thread{
             }
         }catch (Exception e){
             e.printStackTrace();
+        }finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
