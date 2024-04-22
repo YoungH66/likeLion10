@@ -9,6 +9,8 @@ public class EchoClientExam {
         System.out.println("connected to server. Port: 9999");
 
         // 데이터 읽고 쓰기
+        // 클라이언트의 출력이 서버의 입력이 된다.
+        // socket.getOutputStream();    <- 클라이언트의 출력
         PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
         BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
