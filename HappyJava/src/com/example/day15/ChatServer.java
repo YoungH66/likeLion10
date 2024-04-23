@@ -72,7 +72,11 @@ class chatThread extends Thread {
             while((msg = br.readLine()) != null) {
                 if("/quit".equalsIgnoreCase(msg.trim()))
                     break;
-                broadcast(id + " : " + msg);
+                if(msg.startsWith("/to")) {
+                    whisper(msg);
+                }
+                else
+                    broadcast(id + " : " + msg);
             }
         }catch (IOException e){
             e.printStackTrace();
@@ -97,6 +101,25 @@ class chatThread extends Thread {
                     throw new RuntimeException(e);
                 }
             }
+        }
+    }
+    // 메시지를 특정 사용자에게만 보내는 메소드
+    public void whisper(String msg) {
+        int firstSpaceIndex = msg.indexOf(" "); // 첫번째 공백
+        if (firstSpaceIndex == -1) return; //공백이 없다면....
+
+        int secondSpaceIndex = msg.indexOf(" ", firstSpaceIndex + 1);   // 두번째 공백
+        if (secondSpaceIndex == -1) return; //두번째 공백이 없다는 것도 메시지가 잘못된거니까..
+
+        String to = msg.substring(firstSpaceIndex + 1, secondSpaceIndex);   // 수신자
+        String message = msg.substring(secondSpaceIndex + 1);   // 메시지
+
+        //to(수신자)에게 메시지 전송.
+        PrintWriter pw = chatClients.get(to);
+        if (pw != null) {
+            pw.println(id + "님으로부터 귓속말 : " + message);
+        } else {
+            System.out.println("오류 : 수신자 " + to + " 님을 찾을 수 없습니다.");
         }
     }
 
