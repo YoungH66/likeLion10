@@ -37,7 +37,8 @@ class chatThread extends Thread {
     private String id;
     private Map<String, PrintWriter> chatClients;
 
-    BufferedReader br = null;
+    private BufferedReader br = null;
+
     public chatThread(Socket socket, Map<String, PrintWriter> chatClients) {
         this.socket = socket;
         this.chatClients = chatClients;
@@ -46,6 +47,7 @@ class chatThread extends Thread {
         try(PrintWriter pw = new PrintWriter(socket.getOutputStream(), true);
         ){
             this.br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            // Client가 접속하자 마자 id를 보낸다는 약속
             id = br.readLine();
             //이때.. 모든 사용자에게 <id>님이 채팅에 입장했다는 정보를 알림
             broadcast(id + "님이 채팅방에 입장하셨습니다.");
