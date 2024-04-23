@@ -26,8 +26,6 @@ public class ChatServer {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
 }
 
@@ -57,7 +55,7 @@ class chatThread extends Thread {
             // 동시에 일어날 수도 있다.
             // 동기화 사용 필요(Syncronized)
             synchronized (chatClients) {
-                chatClients.put(id, pw);
+                chatClients.put(this.id, pw);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -76,7 +74,7 @@ class chatThread extends Thread {
                     break;
                 broadcast(id + " : " + msg);
             }
-        }catch (Exception e){
+        }catch (IOException e){
             e.printStackTrace();
         }finally {
             synchronized (chatClients) {
@@ -106,8 +104,18 @@ class chatThread extends Thread {
     public void broadcast(String message) {
         // 각각 클라이언트와 통신 할 수 있는 통로 얻어옴
         // 모든 클라이언트에게 전송하기 위해 사용해야 할 것 --> ??
-        for(PrintWriter pw : chatClients.values()) {
+        /*for(PrintWriter pw : chatClients.values()) {
             pw.println(message);
+        }*/
+
+        Iterator<PrintWriter> it = chatClients.values().iterator();
+        while(it.hasNext()) {
+            PrintWriter pw = it.next();
+            try{
+                pw.println(message);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 }

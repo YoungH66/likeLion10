@@ -27,7 +27,8 @@ public class ChatClient {
             // 키보드로부터 입력받은 내용을 서버에 보내는 코드
             String msg = null;
             while((msg = stdin.readLine()) != null) {
-                System.out.println(msg);
+                //System.out.println(msg);
+                out.println(msg);
                 if("/quit".equalsIgnoreCase(msg.trim()))
                     break;
             }
@@ -41,16 +42,14 @@ class InputThread extends Thread {
     private Socket socket;
     private BufferedReader in;
 
-    public InputThread(Socket socket, BufferedReader in) {
+    InputThread(Socket socket, BufferedReader in) {
         this.socket = socket;
         this.in = in;
     }
 
     @Override
     public void run() {
-        try(BufferedReader in = this.in;
-            Socket socket = this.socket;
-            )
+        try
         {
             String msg = null;
             while((msg = in.readLine()) != null) {
@@ -58,6 +57,14 @@ class InputThread extends Thread {
             }
         }catch (Exception e) {
             e.printStackTrace();
+        }finally {
+            if(in != null) {
+                try {
+                    in.close();
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
