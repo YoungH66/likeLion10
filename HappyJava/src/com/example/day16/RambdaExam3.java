@@ -32,6 +32,26 @@ public class RambdaExam3 {
 
         IntSupplier intSupplier = () -> (int)(Math.random() * 6) + 1;
         System.out.println(intSupplier.getAsInt());
+
+        // UnaryOperator
+        // 입력과 출력이 같은 타입의 값일 때 사용
+        UnaryOperator<Integer> square = x -> x * x;
+        System.out.println(square.apply(6));
+
+        // BiFunction
+        // 두 개의 입력을 받고 하나의 결과를 반환
+        BiFunction<Integer, Integer, Integer> addBi = (a, b) -> a + b;
+        System.out.println(addBi.apply(1, 2));
+
+        // Consumer 의 andThen 메소드
+        // 입력만 받고 반환값이 없음
+        Consumer<String> conA = s -> System.out.println(s + " a");
+        Consumer<String> conB = s -> System.out.println(s + " b");
+        conA.accept("young");
+        conB.accept("young");
+
+        Consumer<String> conAB = conA.andThen(conB);
+        conAB.accept("kim");
     }
 
 }
