@@ -12,9 +12,17 @@ public class GroupingTest {
                 new Member("Jack", 19, Member.FEMALE)
         );
 
+        for(Member member : members) {
+            System.out.println(member);
+        }
+
         // grouping
         Map<Integer, List<Member>> mapByGender = members.stream()
                 .collect(Collectors.groupingBy(Member::getGender));
+
+        for(Map.Entry<Integer, List<Member>> entry : mapByGender.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
 
         System.out.println("Male..");
         mapByGender.get(Member.MALE)
