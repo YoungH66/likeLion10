@@ -42,11 +42,12 @@ public class StreamExam1 {
         // 짝수만 출력
         Arrays.stream(iarr).filter(n -> n % 2 == 0).forEach(System.out::println);
         // 스트림 없이
-        List<Integer> nonSteamiarr = new ArrayList<>();
+        /*List<Integer> nonSteamiarr = new ArrayList<>();
         for(int n : iarr){
             if(n % 2 == 0)
                 nonSteamiarr.add(n);
         }
-        System.out.println(nonSteamiarr);
+        System.out.println(nonSteamiarr);*/
+
     }
 }
