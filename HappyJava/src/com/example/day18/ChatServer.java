@@ -13,7 +13,7 @@ public class ChatServer {
         System.out.println("채팅 서버가 시작되었습니다.");
 
         try (ServerSocket serverSocket = new ServerSocket(PORT);
-        ){
+        ) {
             System.out.println("Server listening on port " + PORT);
             // 여러명의 클라이언트의 정보를 기억할 공간
             Map<String, PrintWriter> chatClients = new HashMap<>();
@@ -36,9 +36,9 @@ public class ChatServer {
         private PrintWriter out;
         private BufferedReader in;
         private Map<String, PrintWriter> chatClients;
-        private Map<Boolean, Integer> chatRooms = new HashMap<>();
+        private Map<Integer, Boolean> chatRooms = new HashMap<>();
 
-        public Handler(Socket socket,Map<String, PrintWriter> chatClients) {
+        public Handler(Socket socket, Map<String, PrintWriter> chatClients) {
             this.socket = socket;
             this.chatClients = chatClients;
         }
@@ -52,7 +52,7 @@ public class ChatServer {
                 chatClients.put(nickname, out);
 
                 synchronized (allClients) {
-                    for(PrintWriter anoun : allClients) {
+                    for (PrintWriter anoun : allClients) {
                         anoun.println(nickname + " 님이 입장하셨습니다.");
                     }
                     allClients.add(out);
@@ -69,20 +69,37 @@ public class ChatServer {
                                     out.println("올바른 명령 형식이 아닙니다. '/create [방번호]' 형식으로 입력하세요.");
                                     continue;
                                 }
-                                Integer roomNumber = Integer.parseInt(parts[1]);
-
-                                if(!chatRooms.containsValue(roomNumber)){
-                                    chatRooms.put(true, roomNumber);
-                                    out.println("방이 생성되었습니다. 방 번호 : " + roomNumber);
-                                }else {
-                                    out.println("이미 존재하는 방입니다.");
+                                try {
+                                    Integer roomNumber = Integer.parseInt(parts[1]);
+                                    if (!chatRooms.containsKey(roomNumber)) {
+                                        chatRooms.put(roomNumber, true);
+                                        out.println("방이 생성되었습니다. 방 번호 : " + roomNumber);
+                                    } else {
+                                        out.println("이미 존재하는 방입니다.");
+                                    }
+                                    continue;
+                                } catch (NumberFormatException e) {
+                                    out.println("올바른 형식이 아닙니다. '/create [방번호]' 형식으로 입력하세요.");
+                                    continue;
                                 }
-                                continue;
                             }
-                            else if("/bye".equals(input)) {
+                            else if ("/list".equals(input)) {
+                                StringBuilder roomList = new StringBuilder("현재 존재하는 방 목록:\n");
+                                if (chatRooms.isEmpty())
+                                    roomList.append("생성된 방이 없습니다.");
+                                else {
+                                    for (Map.Entry<Integer, Boolean> entry : chatRooms.entrySet()) {
+                                        roomList.append("방 번호: ").append(entry.getKey()).append("\n");
+                                    }
+                                }
+                                out.println(roomList);
+                                continue;
+
+                            } else if ("/bye".equals(input)) {
                                 writer.println(nickname + " 님이 퇴장하셨습니다.");
                                 continue;
                             }
+
                             writer.println(nickname + " : " + input);
                         }
                     }
