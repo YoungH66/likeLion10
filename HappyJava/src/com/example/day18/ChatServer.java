@@ -8,6 +8,7 @@ import java.util.logging.Handler;
 public class ChatServer {
     private static final int PORT = 12345;
     private static Set<PrintWriter> allClients = new HashSet<>();
+    private static Map<Integer, Boolean> chatRooms = new HashMap<>();
 
     public static void main(String[] args) throws Exception {
         System.out.println("채팅 서버가 시작되었습니다.");
@@ -19,7 +20,7 @@ public class ChatServer {
             Map<String, PrintWriter> chatClients = new HashMap<>();
 
             while (true) {
-                // 2. accept() 를 통해 소켓을 얻어옴 (여러 클라이언트와 접속할 수 있도록)
+                // accept() 를 통해 소켓을 얻어옴 (여러 클라이언트와 접속할 수 있도록)
                 Socket socket = serverSocket.accept();
 
                 // Thread 이용
@@ -36,7 +37,6 @@ public class ChatServer {
         private PrintWriter out;
         private BufferedReader in;
         private Map<String, PrintWriter> chatClients;
-        private Map<Integer, Boolean> chatRooms = new HashMap<>();
 
         public Handler(Socket socket, Map<String, PrintWriter> chatClients) {
             this.socket = socket;
@@ -48,6 +48,7 @@ public class ChatServer {
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream(), true);
 
+                System.out.println("신규 IP 접속 : " + socket.getInetAddress());
                 String nickname = in.readLine();
                 chatClients.put(nickname, out);
 
@@ -61,7 +62,8 @@ public class ChatServer {
                 String input;
                 while ((input = in.readLine()) != null) {
                     synchronized (allClients) {
-                        for (PrintWriter writer : allClients) {
+                        // 방 관련 명령어는 여기에
+                        synchronized (chatRooms) {
                             if (input.startsWith("/create ")) {
                                 // 입력에서 방 번호 추출
                                 String[] parts = input.split(" ");
@@ -82,8 +84,7 @@ public class ChatServer {
                                     out.println("올바른 형식이 아닙니다. '/create [방번호]' 형식으로 입력하세요.");
                                     continue;
                                 }
-                            }
-                            else if ("/list".equals(input)) {
+                            } else if ("/list".equals(input)) {
                                 StringBuilder roomList = new StringBuilder("현재 존재하는 방 목록:\n");
                                 if (chatRooms.isEmpty())
                                     roomList.append("생성된 방이 없습니다.");
@@ -94,12 +95,15 @@ public class ChatServer {
                                 }
                                 out.println(roomList);
                                 continue;
+                            }
+                        }
 
-                            } else if ("/bye".equals(input)) {
+                        // 모두를 대상으로 할 명령어는 여기에
+                        for (PrintWriter writer : allClients) {
+                            if ("/bye".equals(input)) {
                                 writer.println(nickname + " 님이 퇴장하셨습니다.");
                                 continue;
                             }
-
                             writer.println(nickname + " : " + input);
                         }
                     }

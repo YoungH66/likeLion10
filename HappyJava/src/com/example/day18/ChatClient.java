@@ -40,29 +40,20 @@ public class ChatClient {
                     String[] commnad = userInput.split(" ", 2);
                     switch (commnad[0]) {
                         case "/list":
-                            synchronized (out) {
-                                out.println(userInput);
-                            }
+                            out.println(userInput);
                             break;
                         case "/create":
-                            synchronized (out) {
-                                out.println(userInput);
-                            }
+                            out.println(userInput);
                             break;
                         case "/join":
-                            synchronized (out) {
-                                out.println(userInput);
-                            }
+                            out.println(userInput);
                             break;
                         case "/exit":
-                            synchronized (out) {
-                                out.println(userInput);
-                            }
+                            out.println(userInput);
+                            printManual();
                             break;
                         case "/bye":
-                            synchronized (out) {
-                                out.println(userInput);
-                            }
+                            out.println(userInput);
                             stdIn.close();
                             socket.close();
                             return;
