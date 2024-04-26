@@ -11,14 +11,23 @@ public class ChatServer {
 
     public static void main(String[] args) throws Exception {
         System.out.println("채팅 서버가 시작되었습니다.");
-        ServerSocket listener = new ServerSocket(PORT);
 
-        try {
+        try (ServerSocket serverSocket = new ServerSocket(PORT);
+        ){
+            System.out.println("Server listening on port " + PORT);
+            // 여러명의 클라이언트의 정보를 기억할 공간
+            Map<String, PrintWriter> chatClients = new HashMap<>();
+
             while (true) {
-                new Handler(listener.accept()).start();
+                // 2. accept() 를 통해 소켓을 얻어옴 (여러 클라이언트와 접속할 수 있도록)
+                Socket socket = serverSocket.accept();
+
+                // Thread 이용
+                // 여러 클라이언트의 정보를 기억할 공간
+                new Handler(socket, chatClients).start();
             }
-        } finally {
-            listener.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -26,10 +35,12 @@ public class ChatServer {
         private Socket socket;
         private PrintWriter out;
         private BufferedReader in;
-        private Map<String, PrintWriter> clients;
+        private Map<String, PrintWriter> chatClients;
+        private Map<Boolean, Integer> chatRooms = new HashMap<>();
 
-        public Handler(Socket socket) {
+        public Handler(Socket socket,Map<String, PrintWriter> chatClients) {
             this.socket = socket;
+            this.chatClients = chatClients;
         }
 
         public void run() {
@@ -37,7 +48,13 @@ public class ChatServer {
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream(), true);
 
+                String nickname = in.readLine();
+                chatClients.put(nickname, out);
+
                 synchronized (allClients) {
+                    for(PrintWriter anoun : allClients) {
+                        anoun.println(nickname + " 님이 입장하셨습니다.");
+                    }
                     allClients.add(out);
                 }
 
@@ -45,7 +62,28 @@ public class ChatServer {
                 while ((input = in.readLine()) != null) {
                     synchronized (allClients) {
                         for (PrintWriter writer : allClients) {
-                            writer.println(input);
+                            if (input.startsWith("/create ")) {
+                                // 입력에서 방 번호 추출
+                                String[] parts = input.split(" ");
+                                if (parts.length != 2) {
+                                    out.println("올바른 명령 형식이 아닙니다. '/create [방번호]' 형식으로 입력하세요.");
+                                    continue;
+                                }
+                                Integer roomNumber = Integer.parseInt(parts[1]);
+
+                                if(!chatRooms.containsValue(roomNumber)){
+                                    chatRooms.put(true, roomNumber);
+                                    out.println("방이 생성되었습니다. 방 번호 : " + roomNumber);
+                                }else {
+                                    out.println("이미 존재하는 방입니다.");
+                                }
+                                continue;
+                            }
+                            else if("/bye".equals(input)) {
+                                writer.println(nickname + " 님이 퇴장하셨습니다.");
+                                continue;
+                            }
+                            writer.println(nickname + " : " + input);
                         }
                     }
                 }
@@ -64,7 +102,5 @@ public class ChatServer {
                 }
             }
         }
-
-
     }
 }
