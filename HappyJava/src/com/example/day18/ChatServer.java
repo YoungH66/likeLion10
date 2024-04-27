@@ -54,7 +54,7 @@ public class ChatServer {
 
                 synchronized (allClients) {
                     for (PrintWriter anoun : allClients) {
-                        anoun.println(nickname + " 님이 입장하셨습니다.");
+                        anoun.println("[ To All ]" + nickname + " 님이 서버에 입장하셨습니다.");
                     }
                     allClients.add(out);
                 }
@@ -64,6 +64,7 @@ public class ChatServer {
                     synchronized (allClients) {
                         // 방 관련 명령어는 여기에
                         synchronized (chatRooms) {
+                            // 방 생성
                             if (input.startsWith("/create ")) {
                                 // 입력에서 방 번호 추출
                                 String[] parts = input.split(" ");
@@ -84,7 +85,10 @@ public class ChatServer {
                                     out.println("올바른 형식이 아닙니다. '/create [방번호]' 형식으로 입력하세요.");
                                     continue;
                                 }
-                            } else if ("/list".equals(input)) {
+                            }
+
+                            // 방 리스트 확인
+                            else if ("/list".equals(input)) {
                                 StringBuilder roomList = new StringBuilder("현재 존재하는 방 목록:\n");
                                 if (chatRooms.isEmpty())
                                     roomList.append("생성된 방이 없습니다.");
@@ -96,15 +100,31 @@ public class ChatServer {
                                 out.println(roomList);
                                 continue;
                             }
+
+                            // 방 접속
+                            else if(input.startsWith("/join")){
+                                String[] parts = input.split(" ");
+                                if(parts.length != 2) {
+                                    out.println("올바른 명령 형식이 아닙니다. '/join [방번호]' 형식으로 입력하세요.");
+                                    continue;
+                                }
+                                try{
+                                    Integer roomNumber = Integer.parseInt(parts[1]);
+
+                                }catch (NumberFormatException e){
+                                    out.println("올바른 형식이 아닙니다. '/join [방번호]' 형식으로 입력하세요.");
+                                    continue;
+                                }
+                            }
                         }
 
                         // 모두를 대상으로 할 명령어는 여기에
                         for (PrintWriter writer : allClients) {
                             if ("/bye".equals(input)) {
-                                writer.println(nickname + " 님이 퇴장하셨습니다.");
+                                writer.println("[ To All ]" + nickname + " 님이 서버에서 퇴장하셨습니다.");
                                 continue;
                             }
-                            writer.println(nickname + " : " + input);
+//                            writer.println(nickname + " : " + input);
                         }
                     }
                 }
