@@ -5,29 +5,29 @@ import java.util.*;
 import java.net.*;
 
 public class ChatRoom {
-    private String roomName;
-    private List<String> clients;
+    private String name;
     private List<String> chatHistory;
+    private Map<String, PrintWriter> clients = new HashMap<>();
 
-    public ChatRoom(String roomName) {
-        this.roomName = roomName;
-        this.clients = new ArrayList<>();
-        this.chatHistory = new ArrayList<>();
+    public ChatRoom(String name) {
+        this.name = name;
     }
 
-    public synchronized void addClient(String client) {
-        clients.add(client);
+    public void addClient(String clientName, PrintWriter out) {
+        clients.put(clientName, out);
     }
-    public synchronized void removeClient(String client) {
-        clients.remove(client);
+
+    public void broadcastMessage(String message) {
+        for (PrintWriter out : clients.values()) {
+            out.println(message);
+        }
     }
-    public void addMessage(String message) {
-        chatHistory.add(message);
-    }
+
     public List<String> getChatHistory() {
         return chatHistory;
     }
-    public String getRoomName() {
-        return roomName;
+
+    public void addChat(String chatHistory) {
+        this.chatHistory.add(chatHistory+"\n");
     }
 }

@@ -8,7 +8,7 @@ import java.util.logging.Handler;
 public class ChatServer {
     private static final int PORT = 12345;
     private static Set<PrintWriter> allClients = new HashSet<>();
-    private static Map<Integer, Boolean> chatRooms = new HashMap<>();
+    private static Map<String, ChatRoom> chatRooms = new HashMap<>();
 
     public static void main(String[] args) throws Exception {
         System.out.println("채팅 서버가 시작되었습니다.");
@@ -54,12 +54,13 @@ public class ChatServer {
 
                 synchronized (allClients) {
                     for (PrintWriter anoun : allClients) {
-                        anoun.println("[ To All ]" + nickname + " 님이 서버에 입장하셨습니다.");
+                        anoun.println("[ To All ] " + nickname + " 님이 서버에 입장하셨습니다.");
                     }
                     allClients.add(out);
                 }
 
                 String input;
+                Lobby:
                 while ((input = in.readLine()) != null) {
                     synchronized (allClients) {
                         // 방 관련 명령어는 여기에
@@ -69,20 +70,22 @@ public class ChatServer {
                                 // 입력에서 방 번호 추출
                                 String[] parts = input.split(" ");
                                 if (parts.length != 2) {
-                                    out.println("올바른 명령 형식이 아닙니다. '/create [방번호]' 형식으로 입력하세요.");
+                                    out.println("올바른 명령 형식이 아닙니다. '/create [방 이름]' 형식으로 입력하세요.");
                                     continue;
                                 }
                                 try {
-                                    Integer roomNumber = Integer.parseInt(parts[1]);
-                                    if (!chatRooms.containsKey(roomNumber)) {
-                                        chatRooms.put(roomNumber, true);
-                                        out.println("방이 생성되었습니다. 방 번호 : " + roomNumber);
+                                    String roomName = parts[1];
+                                    if (!chatRooms.containsKey(roomName)) {
+                                        ChatRoom room = new ChatRoom(roomName);
+//                                        room = new ChatRoom(roomName);
+                                        chatRooms.put(roomName, room);
+                                        out.println("방이 생성되었습니다. 방 이름 : " + roomName);
                                     } else {
                                         out.println("이미 존재하는 방입니다.");
                                     }
                                     continue;
                                 } catch (NumberFormatException e) {
-                                    out.println("올바른 형식이 아닙니다. '/create [방번호]' 형식으로 입력하세요.");
+                                    out.println("올바른 형식이 아닙니다. '/create [방 이름]' 형식으로 입력하세요.");
                                     continue;
                                 }
                             }
@@ -93,8 +96,8 @@ public class ChatServer {
                                 if (chatRooms.isEmpty())
                                     roomList.append("생성된 방이 없습니다.");
                                 else {
-                                    for (Map.Entry<Integer, Boolean> entry : chatRooms.entrySet()) {
-                                        roomList.append("방 번호: ").append(entry.getKey()).append("\n");
+                                    for (Map.Entry<String, ChatRoom> entry : chatRooms.entrySet()) {
+                                        roomList.append("방 이름: ").append(entry.getKey()).append("\n");
                                     }
                                 }
                                 out.println(roomList);
@@ -105,14 +108,32 @@ public class ChatServer {
                             else if(input.startsWith("/join")){
                                 String[] parts = input.split(" ");
                                 if(parts.length != 2) {
-                                    out.println("올바른 명령 형식이 아닙니다. '/join [방번호]' 형식으로 입력하세요.");
+                                    out.println("올바른 명령 형식이 아닙니다. '/join [방 이름]' 형식으로 입력하세요.");
                                     continue;
                                 }
                                 try{
-                                    Integer roomNumber = Integer.parseInt(parts[1]);
-
+                                    if(!chatRooms.containsKey(parts[1])) {
+                                        System.out.println("해당 채팅방이 존재하지 않습니다.");
+                                        continue;
+                                    }
+                                    // 방에 접속해야 함
+                                    ChatRoom room = chatRooms.get(parts[1]);
+                                    room.addClient(nickname, out);
+                                    System.out.println(nickname + " 님이 채팅방에 입장하셨습니다.");
+                                    while(true){
+                                        if("/exit".equals(input)){
+                                            System.out.println(nickname + " 님이 채팅방에서 퇴장하셨습니다.");
+                                            continue Lobby; // lobby 루프로 나가기
+                                        }else if("/history".equals(input)){
+                                            System.out.println("==Chat History==========");
+                                            System.out.println(room.getChatHistory());
+                                            System.out.println("========================");
+                                        }
+                                        room.broadcastMessage(nickname + " : " + input);
+                                        room.addChat(nickname + " : " + input);
+                                    }
                                 }catch (NumberFormatException e){
-                                    out.println("올바른 형식이 아닙니다. '/join [방번호]' 형식으로 입력하세요.");
+                                    out.println("올바른 형식이 아닙니다. '/join [방 이름]' 형식으로 입력하세요.");
                                     continue;
                                 }
                             }
@@ -124,7 +145,7 @@ public class ChatServer {
                                 writer.println("[ To All ]" + nickname + " 님이 서버에서 퇴장하셨습니다.");
                                 continue;
                             }
-//                            writer.println(nickname + " : " + input);
+                            writer.println(nickname + " : " + input);
                         }
                     }
                 }
