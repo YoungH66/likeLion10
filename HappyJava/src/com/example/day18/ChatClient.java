@@ -37,8 +37,17 @@ public class ChatClient {
             while (true) {
                 userInput = stdIn.nextLine();
                 if (userInput.startsWith("/")) {
-                    String[] commnad = userInput.split(" ", 2);
+                    String[] commnad = userInput.split(" ", 3);
                     switch (commnad[0]) {
+                        case "/whisper":
+                            out.println(userInput);
+                            break;
+                        case "/users":
+                            out.println(userInput);
+                            break;
+                        case "/roomusers":
+                            out.println(userInput);
+                            break;
                         case "/list":
                             out.println(userInput);
                             break;
@@ -84,6 +93,9 @@ public class ChatClient {
     }
 
     public static void printManual(){
+        System.out.println("귓속말 : /whisper [닉네임] [메시지]");
+        System.out.println("서버 유저 목록 : /users");
+        System.out.println("현재 채팅방 유저 목록 : /roomusers");
         System.out.println("방 목록 보기 : /list");
         System.out.println("방 생성 : /create");
         System.out.println("방 입장 : /join [방번호]");

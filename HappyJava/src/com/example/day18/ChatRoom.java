@@ -10,6 +10,7 @@ public class ChatRoom {
     private String name;
     private List<String> chatHistory = new ArrayList<>();
     private Map<String, PrintWriter> clients = new HashMap<>();
+    private List<String> roomUsers = new ArrayList<>();
 
     public ChatRoom(String name) {
         this.name = name;
@@ -19,11 +20,13 @@ public class ChatRoom {
 
     public void addClient(String clientName, PrintWriter out) {
         clients.put(clientName, out);
+        roomUsers.add(clientName);
         numOfConnect++;
     }
 
     public void removeClient(String clientName) {
         clients.remove(clientName);
+        roomUsers.remove(clientName);
         numOfConnect--;
     }
 
@@ -47,6 +50,10 @@ public class ChatRoom {
 
     public int getOnline() {
         return numOfConnect;
+    }
+
+    public String getRoomUsers() {
+        return roomUsers.stream().collect(Collectors.joining("\n"));
     }
 
 }

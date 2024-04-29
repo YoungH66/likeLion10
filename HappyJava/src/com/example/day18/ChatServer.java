@@ -9,6 +9,7 @@ public class ChatServer {
     private static final int PORT = 12345;
     private static Set<PrintWriter> allClients = new HashSet<>();
     private static Map<String, ChatRoom> chatRooms = new HashMap<>();
+    private static Set<String> userList = new HashSet<>();
 
     public static void main(String[] args) throws Exception {
         System.out.println("채팅 서버가 시작되었습니다.");
@@ -38,6 +39,7 @@ public class ChatServer {
         private BufferedReader in;
         private Map<String, PrintWriter> chatClients;
 
+
         public Handler(Socket socket, Map<String, PrintWriter> chatClients) {
             this.socket = socket;
             this.chatClients = chatClients;
@@ -51,6 +53,7 @@ public class ChatServer {
                 System.out.println("신규 IP 접속 : " + socket.getInetAddress());
                 String nickname = in.readLine();
                 chatClients.put(nickname, out);
+                userList.add(nickname);
 
                 synchronized (allClients) {
                     for (PrintWriter anoun : allClients) {
@@ -63,6 +66,29 @@ public class ChatServer {
                 Lobby:
                 while ((input = in.readLine()) != null) {
                     synchronized (allClients) {
+                        if(input.startsWith("/whisper")){
+                            String[] parts = input.split(" ");
+                            if(parts.length != 3){
+                                out.println("올바른 명령 형식이 아닙니다. '/whisper [닉네임] [메시지]' 형식으로 입력하세요.");
+                                continue;
+                            }
+                            try{
+                                String tgNickname = parts[1];
+                                String msg = parts[2];
+
+                                PrintWriter writer = chatClients.get(tgNickname);
+                                if(writer != null && !nickname.equals(tgNickname)){
+                                    out.println("[" + tgNickname + "] 님에게 귓속말을 보냈습니다.");
+                                    writer.println("[" + nickname + "] 님으로 부터 귓속말 : " + msg);
+                                }else if(nickname.equals(tgNickname)){
+                                    out.println("본인에게는 귓속말을 보낼 수 없습니다.");
+                                }else{
+                                    out.println("대상을 찾을 수 없습니다.");
+                                }
+                            }catch (NullPointerException e){
+                                out.println("양식이 비어있습니다.");
+                            }
+                        }
                         // 방 관련 명령어는 여기에
                         synchronized (chatRooms) {
                             // 방 생성
@@ -114,6 +140,13 @@ public class ChatServer {
                             }
                         }
                     }
+                    if("/users".equals(input)) {
+                        out.println("== 서버 유저 목록======");
+                        for(String nick : userList){
+                            out.println(nick);
+                        }
+                        out.println("=====================");
+                    }
 
                     // 동기화 밖에 선언..
                     // 동시 접속이 안되는 이슈
@@ -134,9 +167,16 @@ public class ChatServer {
                             room.addClient(nickname, out);
                             room.broadcastMessage(nickname + " 님이 채팅방에 입장하셨습니다.");
                             while((input = in.readLine()) != null){
-                                if("/history".equals(input)){
+                                if("/roomusers".equals(input)) {
                                     // 개인한테만 출력
                                     out.println("==Chat History==========");
+                                    out.println(room.getRoomUsers());
+                                    out.println("========================");
+                                    continue;
+                                }
+                                if("/history".equals(input)){
+                                    // 개인한테만 출력
+                                    out.println("==채팅방 유저 목록==========");
                                     out.println(room.getChatHistory());
                                     out.println("========================");
                                     continue;
