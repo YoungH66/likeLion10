@@ -71,13 +71,13 @@ public class ChatServer {
                         // 어느곳에서든 사용할 수 있는게 적합하다고 판단.
                         if(input.startsWith("/whisper")){
                             String[] parts = input.split(" ");
-                            if(parts.length != 3){
+                            if(parts.length < 3){
                                 out.println("올바른 명령 형식이 아닙니다. '/whisper [닉네임] [메시지]' 형식으로 입력하세요.");
                                 continue;
                             }
                             try{
                                 String tgNickname = parts[1];
-                                String msg = parts[2];
+                                String msg = String.join(" ", Arrays.copyOfRange(parts, 2, parts.length));
 
                                 PrintWriter writer = chatClients.get(tgNickname);
                                 if(writer != null && !nickname.equals(tgNickname)){
@@ -106,7 +106,6 @@ public class ChatServer {
                                     String roomName = parts[1];
                                     if (!chatRooms.containsKey(roomName)) {
                                         ChatRoom room = new ChatRoom(roomName);
-//                                        room = new ChatRoom(roomName);
                                         chatRooms.put(roomName, room);
                                         out.println("방이 생성되었습니다. 방 이름 : " + roomName);
                                     } else {
@@ -129,6 +128,7 @@ public class ChatServer {
                                         roomList.append("방 이름: ").append(entry.getKey()).append("\n");
                                     }
                                 }
+                                roomList.append("=====================");
                                 out.println(roomList);
                                 continue;
                             }
@@ -170,6 +170,34 @@ public class ChatServer {
                             room.addClient(nickname, out);
                             room.broadcastMessage(nickname + " 님이 채팅방에 입장하셨습니다.");
                             while((input = in.readLine()) != null){
+
+                                // 요구사항에 귓속말은 같은 방 내부에서만 동작하지만,
+                                // 실 사용에 있어 서버에 접속 후 서버 내 유저목록을 확인할 수 있는만큼
+                                // 어느곳에서든 사용할 수 있는게 적합하다고 판단.
+                                if(input.startsWith("/whisper")){
+                                    try{
+                                        parts = input.split(" ");
+                                        if(parts.length < 3) {
+                                            out.println("올바른 명령 형식이 아닙니다. '/join [방 이름]' 형식으로 입력하세요.");
+                                            continue;
+                                        }
+                                        String tgNickname = parts[1];
+                                        // 귓속말에서 띄어쓰기가 포함되게 수정
+                                        String msg = String.join(" ", Arrays.copyOfRange(parts, 2, parts.length));
+
+                                        PrintWriter writer = chatClients.get(tgNickname);
+                                        if(writer != null && !nickname.equals(tgNickname)){
+                                            out.println("[" + tgNickname + "] 님에게 귓속말을 보냈습니다.");
+                                            writer.println("[" + nickname + "] 님으로 부터 귓속말 : " + msg);
+                                        }else if(nickname.equals(tgNickname)){
+                                            out.println("본인에게는 귓속말을 보낼 수 없습니다.");
+                                        }else{
+                                            out.println("대상을 찾을 수 없습니다.");
+                                        }
+                                    }catch (NullPointerException e){
+                                        out.println("양식이 비어있습니다.");
+                                    }
+                                }
                                 if("/roomusers".equals(input)) {
                                     // 개인한테만 출력
                                     out.println("==Chat History==========");
