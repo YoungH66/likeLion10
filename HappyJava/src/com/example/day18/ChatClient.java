@@ -18,7 +18,6 @@ public class ChatClient {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             Scanner stdIn = new Scanner(System.in);
 
-            System.out.print("Enter your nickname: ");
             String nickname = stdIn.nextLine();
             out.println(nickname); // 서버에 닉네임을 전송
 

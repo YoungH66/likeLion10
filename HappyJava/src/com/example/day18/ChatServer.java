@@ -9,6 +9,7 @@ public class ChatServer {
     private static final int PORT = 12345;
     private static Set<PrintWriter> allClients = new HashSet<>();
     private static Map<String, ChatRoom> chatRooms = new HashMap<>();
+    private static Set<String> userList = new HashSet<>();
 
     public static void main(String[] args) throws Exception {
         System.out.println("채팅 서버가 시작되었습니다.");
@@ -49,14 +50,27 @@ public class ChatServer {
                 out = new PrintWriter(socket.getOutputStream(), true);
 
                 System.out.println("신규 IP 접속 : " + socket.getInetAddress());
-                String nickname = in.readLine();
-                chatClients.put(nickname, out);
+                String nickname;
 
                 synchronized (allClients) {
-                    for (PrintWriter anoun : allClients) {
-                        anoun.println("[ To All ] " + nickname + " 님이 서버에 입장하셨습니다.");
+                    boolean verified = false;
+                    do{
+                        out.print("Enter your nickname: ");
+                        nickname = in.readLine();
+
+                        if (!addNickname(nickname)) {
+                            out.println("중복되는 닉네임이 있습니다.");
+
+                            verified = true;
+                        } else {
+
+                        }
                     }
-                    allClients.add(out);
+                    while (!verified) ;
+                }
+
+                for (PrintWriter anoun : allClients) {
+                    anoun.println("[ To All ] " + nickname + " 님이 서버에 입장하셨습니다.");
                 }
 
                 String input;
@@ -77,7 +91,6 @@ public class ChatServer {
                                     String roomName = parts[1];
                                     if (!chatRooms.containsKey(roomName)) {
                                         ChatRoom room = new ChatRoom(roomName);
-//                                        room = new ChatRoom(roomName);
                                         chatRooms.put(roomName, room);
                                         out.println("방이 생성되었습니다. 방 이름 : " + roomName);
                                     } else {
@@ -103,7 +116,6 @@ public class ChatServer {
                                 out.println(roomList);
                                 continue;
                             }
-
                         }
 
                         // 모두를 대상으로 할 명령어는 여기에
@@ -118,14 +130,14 @@ public class ChatServer {
                     // 동기화 밖에 선언..
                     // 동시 접속이 안되는 이슈
                     // 방 접속
-                    if(input.startsWith("/join")){
+                    if (input.startsWith("/join")) {
                         String[] parts = input.split(" ");
-                        if(parts.length != 2) {
+                        if (parts.length != 2) {
                             out.println("올바른 명령 형식이 아닙니다. '/join [방 이름]' 형식으로 입력하세요.");
                             continue;
                         }
-                        try{
-                            if(!chatRooms.containsKey(parts[1])) {
+                        try {
+                            if (!chatRooms.containsKey(parts[1])) {
                                 out.println("해당 채팅방이 존재하지 않습니다.");
                                 continue;
                             }
@@ -133,24 +145,24 @@ public class ChatServer {
                             ChatRoom room = chatRooms.get(parts[1]);
                             room.addClient(nickname, out);
                             room.broadcastMessage(nickname + " 님이 채팅방에 입장하셨습니다.");
-                            while((input = in.readLine()) != null){
-                                if("/history".equals(input)){
+                            while ((input = in.readLine()) != null) {
+                                if ("/history".equals(input)) {
                                     // 개인한테만 출력
                                     out.println("==Chat History==========");
                                     out.println(room.getChatHistory());
                                     out.println("========================");
                                     continue;
                                 }
-                                if("/exit".equals(input)){
+                                if ("/exit".equals(input)) {
                                     out.println("채팅방 [" + parts[1] + "] 에서 퇴장했습니다.");
                                     room.removeClient(nickname);
                                     room.broadcastMessage(nickname + " 님이 채팅방에서 퇴장하셨습니다.");
-                                    if(room.getOnline() == 0) {
+                                    if (room.getOnline() == 0) {
                                         chatRooms.remove(parts[1]);
                                         System.out.println("채팅방 [" + parts[1] + "] 이 더이상 사용자가 없어 삭제되었습니다.");
                                     }
                                     continue Lobby; // lobby 루프로 나가기
-                                }else {
+                                } else {
                                     try {
                                         room.broadcastMessage(nickname + " : " + input);
                                         room.addChat(nickname + " : " + input);
@@ -159,7 +171,7 @@ public class ChatServer {
                                     }
                                 }
                             }
-                        }catch (NumberFormatException e){
+                        } catch (NumberFormatException e) {
                             out.println("올바른 형식이 아닙니다. '/join [방 이름]' 형식으로 입력하세요.");
                         }
                     }
@@ -179,5 +191,9 @@ public class ChatServer {
                 }
             }
         }
+    }
+
+    public static boolean addNickname(String nickname) {
+        return userList.add(nickname);
     }
 }
