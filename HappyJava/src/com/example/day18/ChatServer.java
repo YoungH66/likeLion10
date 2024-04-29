@@ -66,6 +66,9 @@ public class ChatServer {
                 Lobby:
                 while ((input = in.readLine()) != null) {
                     synchronized (allClients) {
+                        // 요구사항에 귓속말은 같은 방 내부에서만 동작하지만,
+                        // 실 사용에 있어 서버에 접속 후 서버 내 유저목록을 확인할 수 있는만큼
+                        // 어느곳에서든 사용할 수 있는게 적합하다고 판단.
                         if(input.startsWith("/whisper")){
                             String[] parts = input.split(" ");
                             if(parts.length != 3){
