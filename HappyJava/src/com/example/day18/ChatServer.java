@@ -92,7 +92,7 @@ public class ChatServer {
 
                             // 방 리스트 확인
                             else if ("/list".equals(input)) {
-                                StringBuilder roomList = new StringBuilder("현재 존재하는 방 목록:\n");
+                                StringBuilder roomList = new StringBuilder("==현재 존재하는 방 목록=======\n");
                                 if (chatRooms.isEmpty())
                                     roomList.append("생성된 방이 없습니다.");
                                 else {
@@ -104,48 +104,63 @@ public class ChatServer {
                                 continue;
                             }
 
-                            // 방 접속
-                            else if(input.startsWith("/join")){
-                                String[] parts = input.split(" ");
-                                if(parts.length != 2) {
-                                    out.println("올바른 명령 형식이 아닙니다. '/join [방 이름]' 형식으로 입력하세요.");
-                                    continue;
-                                }
-                                try{
-                                    if(!chatRooms.containsKey(parts[1])) {
-                                        System.out.println("해당 채팅방이 존재하지 않습니다.");
-                                        continue;
-                                    }
-                                    // 방에 접속해야 함
-                                    ChatRoom room = chatRooms.get(parts[1]);
-                                    room.addClient(nickname, out);
-                                    System.out.println(nickname + " 님이 채팅방에 입장하셨습니다.");
-                                    while(true){
-                                        if("/exit".equals(input)){
-                                            System.out.println(nickname + " 님이 채팅방에서 퇴장하셨습니다.");
-                                            continue Lobby; // lobby 루프로 나가기
-                                        }else if("/history".equals(input)){
-                                            System.out.println("==Chat History==========");
-                                            System.out.println(room.getChatHistory());
-                                            System.out.println("========================");
-                                        }
-                                        room.broadcastMessage(nickname + " : " + input);
-                                        room.addChat(nickname + " : " + input);
-                                    }
-                                }catch (NumberFormatException e){
-                                    out.println("올바른 형식이 아닙니다. '/join [방 이름]' 형식으로 입력하세요.");
-                                    continue;
-                                }
-                            }
                         }
 
                         // 모두를 대상으로 할 명령어는 여기에
-                        for (PrintWriter writer : allClients) {
-                            if ("/bye".equals(input)) {
-                                writer.println("[ To All ]" + nickname + " 님이 서버에서 퇴장하셨습니다.");
+                        if ("/bye".equals(input)) {
+                            for (PrintWriter writer : allClients) {
+                                writer.println("[ To All ] " + nickname + " 님이 서버에서 퇴장하셨습니다.");
+
+                            }
+                        }
+                    }
+
+                    // 동기화 밖에 선언..
+                    // 동시 접속이 안되는 이슈
+                    // 방 접속
+                    if(input.startsWith("/join")){
+                        String[] parts = input.split(" ");
+                        if(parts.length != 2) {
+                            out.println("올바른 명령 형식이 아닙니다. '/join [방 이름]' 형식으로 입력하세요.");
+                            continue;
+                        }
+                        try{
+                            if(!chatRooms.containsKey(parts[1])) {
+                                out.println("해당 채팅방이 존재하지 않습니다.");
                                 continue;
                             }
-                            writer.println(nickname + " : " + input);
+                            // 방에 접속해야 함
+                            ChatRoom room = chatRooms.get(parts[1]);
+                            room.addClient(nickname, out);
+                            room.broadcastMessage(nickname + " 님이 채팅방에 입장하셨습니다.");
+                            while((input = in.readLine()) != null){
+                                if("/history".equals(input)){
+                                    // 개인한테만 출력
+                                    out.println("==Chat History==========");
+                                    out.println(room.getChatHistory());
+                                    out.println("========================");
+                                    continue;
+                                }
+                                if("/exit".equals(input)){
+                                    out.println("채팅방 [" + parts[1] + "] 에서 퇴장했습니다.");
+                                    room.removeClient(nickname);
+                                    room.broadcastMessage(nickname + " 님이 채팅방에서 퇴장하셨습니다.");
+                                    if(room.getOnline() == 0) {
+                                        chatRooms.remove(parts[1]);
+                                        System.out.println("채팅방 [" + parts[1] + "] 이 더이상 사용자가 없어 삭제되었습니다.");
+                                    }
+                                    continue Lobby; // lobby 루프로 나가기
+                                }else {
+                                    try {
+                                        room.broadcastMessage(nickname + " : " + input);
+                                        room.addChat(nickname + " : " + input);
+                                    } catch (NullPointerException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }catch (NumberFormatException e){
+                            out.println("올바른 형식이 아닙니다. '/join [방 이름]' 형식으로 입력하세요.");
                         }
                     }
                 }

@@ -52,6 +52,9 @@ public class ChatClient {
                             out.println(userInput);
                             printManual();
                             break;
+                        case "/history":
+                            out.println(userInput);
+                            break;
                         case "/bye":
                             out.println(userInput);
                             stdIn.close();
