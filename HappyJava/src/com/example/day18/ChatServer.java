@@ -200,14 +200,14 @@ public class ChatServer {
                                 }
                                 if("/roomusers".equals(input)) {
                                     // 개인한테만 출력
-                                    out.println("==Chat History==========");
+                                    out.println("==채팅방 유저 목록==========");
                                     out.println(room.getRoomUsers());
                                     out.println("========================");
                                     continue;
                                 }
                                 if("/history".equals(input)){
                                     // 개인한테만 출력
-                                    out.println("==채팅방 유저 목록==========");
+                                    out.println("==Chat History==========");
                                     out.println(room.getChatHistory());
                                     out.println("========================");
                                     continue;
