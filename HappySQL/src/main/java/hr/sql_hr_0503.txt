@@ -8,7 +8,7 @@ desc departments;
 
 -- 사번, first_name, email, department_name을 조회
 select employee_id, first_name, email, d.department_name
-from employees e left join hr.departments d on e.employee_id = d.manager_id;
+from employees e left join hr.departments d on e.department_id = d.department_id;
 
 -- join 사용
 select e.department_id, e.first_name, e.email, d.department_name
