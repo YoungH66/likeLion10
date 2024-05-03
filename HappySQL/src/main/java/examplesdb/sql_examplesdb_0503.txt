@@ -30,3 +30,22 @@ from emp e, dept d
 where e.deptno = d.deptno
   and e.sal >= 2500
   and d.dname = 'research';
+
+desc SALGRADE;
+select * from SALGRADE;
+
+-- 이름, 급여, 등급을 조회
+select e.ename, e.sal, s.GRADE
+    from emp e, SALGRADE s
+where e.sal between s.LOSAL and s.HISAL;
+
+select e.ename, d.dname
+from emp e natural join dept d; # 두 테이블에 같은 이름의 컬럼들을 모두 조인조건으로 사용한다.
+
+-- join using 컬럼명을 지정, 두개 테이블에 같은 이름의 컬럼이 있어야 한다.
+select e.ename, d.dname
+from emp e join dept d using (deptno);
+
+-- join on 조건을 직접 기술, 컬럼명이 달라도 사용 가능
+select e.ename, d.dname
+from emp e join dept d on(e.deptno = d.deptno);
