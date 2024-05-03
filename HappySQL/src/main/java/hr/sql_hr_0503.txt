@@ -1,0 +1,16 @@
+use hr;
+show tables;
+
+desc employees;
+
+desc departments;
+
+-- 사번, first_name, email, department_name을 조회
+select employee_id, first_name, email, d.department_name
+from employees e, departments d
+where e.department_id = d.department_id;
+
+-- 사번, first_name, email, department_name, city을 조회
+select e.employee_id, e.first_name, e.email, d.department_name, l.city
+from employees e, departments d, locations l
+where e.department_id = d.department_id and d.location_id = l.location_id;

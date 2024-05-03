@@ -1,0 +1,110 @@
+show tables;
+
+# 오라클은 반드시 쿼리를 수행시 결과 테이블이 존재함
+# select 컬럼명, 컬럼명리스트 from 테이블명
+# select version() from dual
+select version();
+
+select version(),
+       current_date;
+select current_user;
+
+select current_user; select  current_user; select sin(pi() / 4);
+
+# create user 'yh'@'localhost' identified  by 'urstory';
+
+show databases;
+
+use hr;
+show tables;
+# use examplesdb;
+# show tables;
+
+/*조회 select 컬럼명.. from 테이블명..*/
+desc employees;
+select distinct employees.department_id from employees;
+
+use examplesdb;
+show tables;
+
+# desc emp;
+#
+# select emp.empno, emp.ename, sal from emp;
+#
+# desc dept;
+# # 부서 테이블에서 부서이름과 지역을 조회
+# select dname, loc from dept;
+
+CREATE TABLE SALGRADE (
+                          GRADE TINYINT,
+                          LOSAL SMALLINT,
+                          HISAL SMALLINT
+);
+
+INSERT INTO SALGRADE VALUES (1,  700, 1200);
+INSERT INTO SALGRADE VALUES (2, 1201, 1400);
+INSERT INTO SALGRADE VALUES (3, 1401, 2000);
+INSERT INTO SALGRADE VALUES (4, 2001, 3000);
+INSERT INTO SALGRADE VALUES (5, 3001, 9999);
+
+# 해당 데이터베이스의 모든 테이블을 출력
+show tables;
+
+show tables;
+select first_name, last_name from employees;
+select first_name 이름, hire_date 입사일 from employees;
+
+select concat(first_name, ' ', last_name) 이름, hire_date 입사일
+from employees;
+
+select manager_id from employees;
+select distinct manager_id from employees;
+
+-- 오늘까지 근무한 근무개월 수와 직원 이름을 출력
+select concat(first_name, ' ', last_name) name,
+       period_diff(date_format(curdate(), '%Y%m'),
+                   date_format(hire_date, '%Y%m'))
+from employees;
+
+### SELECT 문 사용 (기본 검색)
+
+# 1. `employees` 테이블에서 직원의 이름(first_name), 성(last_name)을 조회하세요.
+    select first_name, last_name
+    from employees;
+# 2. `departments` 테이블에서 모든 부서의 이름(department_name)과 위치 ID(location_id)를 조회하세요.
+SELECT department_name, location_id
+from departments;
+# 3. `jobs` 테이블에서 직업 ID(job_id)와 직업 타이틀(job_title)을 조회하세요.
+    select job_id, job_title
+        from jobs;
+# 4. `locations` 테이블에서 각 위치의 주소(street_address)와 우편번호(postal_code)를 조회하세요.
+    select street_address, postal_code
+    from locations;
+# 5. `countries` 테이블에서 국가 ID(country_id)와 국가 이름(country_name)을 조회하세요.
+    select country_id, country_name
+    from countries;
+# 6. `regions` 테이블에서 지역 ID(region_id)와 지역 이름(region_name)을 조회하세요.
+# 7. `employees` 테이블에서 모든 직원의 직업 ID(job_id)를 조회하세요.
+# 8. `departments` 테이블에서 부서 ID(department_id)별로 부서 이름(department_name)을 조회하세요.
+# 9. `job_history` 테이블에서 직원 ID(employee_id)와 부서 ID(department_id)를 조회하세요.
+# 10. `employees` 테이블에서 직원 ID(employee_id), 이름(first_name)과 성(last_name)을 조회하세요.
+
+### WHERE 구문 사용 (조건 검색)
+
+# 1. `employees` 테이블에서 급여(salary)가 10000 이상인 직원의 이름과 급여를 조회하세요.
+# 2. `departments` 테이블에서 위치 ID(location_id)가 1700인 부서의 이름을 조회하세요.
+# 3. `employees` 테이블에서 직업 ID(job_id)가 'IT_PROG'인 직원들의 전체 정보를 조회하세요.
+# 4. `employees` 테이블에서 부서 ID(department_id)가 90인 직원들의 이름과 급여를 조회하세요.
+# 5. `jobs` 테이블에서 최소 급여(min_salary)가 5000 이상인 직업의 타이틀을 조회하세요.
+# 6. `employees` 테이블에서 성(last_name)이 'King'인 직원의 전체 정보를 조회하세요.
+# 7. `locations` 테이블에서 국가 ID(country_id)가 'US'인 위치의 상세 정보를 조회하세요.
+# 8. `job_history` 테이블에서 시작 날짜(start_date)가 '2001-01-01' 이전인 기록을 조회하세요.
+# 9. `employees` 테이블에서 성(last_name)에 'a'가 포함되는 직원들의 이름과 이메일을 조회하세요.
+# 10. `departments` 테이블에서 부서 이름(department_name)이 'Sales'인 부서의 모든 직원 정보를 조회하세요.
+
+
+
+
+
+
+

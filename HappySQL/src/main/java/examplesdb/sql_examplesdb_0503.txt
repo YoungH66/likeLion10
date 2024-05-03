@@ -1,0 +1,32 @@
+use examplesdb;
+show tables;
+
+select emp.ename, emp.job, emp.sal from emp where deptno between 20 and 10; # 주의! 작은 값이 먼저 나와야 한다.
+select ename, job, sal from emp where sal between 1800 and 3000;
+
+desc emp;
+desc dept;
+
+select * from emp;
+select * from dept;
+select deptno, ename from emp;
+
+-- 사원이름과 부서이름을 알고싶다.
+select emp.ename, dept.dname
+from emp, dept  # 여기까지만 하면, 카타르시안 조인으로 바람직 하지 않은 결과가 나온다.
+where emp.deptno = dept.deptno; # equijoin, 컬럼에 있는 값이 정확하게 일치하는 경우에 사용할 수 있다.
+
+select e.ename, d.dname from emp e, dept d
+where e.deptno = d.deptno;
+
+-- 사원이름, 부서명, 급여를 조회, 단, 급여가 2500 이상인 사원만 조회
+select e.ename, d.dname, e.sal
+from emp e, dept d
+where e.deptno = d.deptno and e.sal >= 2500;
+
+-- 사원이름, 부서명, 급여를 조회, 단, 급여가 2500 이상이고, 부서가 research 부서 사원만 조회
+select e.ename, d.dname, e.sal
+from emp e, dept d
+where e.deptno = d.deptno
+  and e.sal >= 2500
+  and d.dname = 'research';
