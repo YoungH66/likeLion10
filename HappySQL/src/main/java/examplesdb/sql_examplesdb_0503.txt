@@ -103,4 +103,136 @@ select ename, sal
 from emp
 where sal < (select avg(sal) from emp);
 
+select e.ename, d.deptno
+from emp e
+    left join dept d on e.deptno = d.deptno
+where d.dname = (select dname
+                 from dept
+                 where dname = 'SALES');
 
+-- err 발생
+# select *
+# from emp
+# where ename = (select min(ename)
+#                 from emp
+#                 group by deptno);
+
+select *
+from emp
+where ename in (select min(ename)
+                from emp
+                group by deptno);
+
+
+# in (= or) 결합
+select *
+from emp
+where ename in ('KIM', 'CLARK', 'ADAMS', 'ALLEN');
+# 위와 같다
+select *
+from emp
+where ename = 'KIM' OR ename = 'CLARK' OR ename = 'ADAMS' OR ename = 'ALLEN';
+
+# any all :: 등호 필요 / >any <any >=any ... / any ~~ or // all ~~ and
+select *
+from emp
+where sal > any (select avg(sal)
+                 from emp
+                 group by deptno);
+
+select avg(sal)
+from emp
+group by deptno;
+
+select * from emp
+where sal > 6000 or sal > 2916 or sal > 2175 or sal > 1566;
+
+select * from emp
+where sal > all (select avg(sal)
+                 from emp
+                 group by  deptno);
+
+select * from emp
+where sal > 6000 and sal > 2916 and sal > 2175 and sal > 1566;
+
+# = any ( = or ) in과 같다.
+select *
+from emp
+where sal < all (select avg(sal)
+                 from emp
+                 group by deptno);
+
+# 서브 쿼리가 실행될 때 바깥쪽 row의 값을 이용해서 결과 값을 얻어내는 쿼리.
+# 각 부서별 최고 급여를 받는 사원정보를 조회
+select *
+from emp e
+    left join dept d on (e.deptno = d.deptno)
+where e.sal in (select max(sal)
+                from emp
+                where e.deptno = deptno);
+
+select *
+from emp
+where (deptno, sal) in (select deptno, max(sal)
+                        from emp
+                        group by deptno);
+
+select e.deptno, e.empno, e.ename, e.sal
+from emp e, (select s.deptno, max(s.sal) msal
+             from emp s
+             group by s.deptno) m
+where e.deptno = m.deptno and e.sal = m.msal;
+
+# 자기 부서의 평균 급여보다 많이 받는 사원의 정보를 조회
+select *
+from emp e
+where sal > (select avg(sal)
+             from emp
+             where e.deptno = deptno);
+
+-- test 용 테이블, 이후 삭제 요망
+create table A (
+    name int
+);
+
+create table b (
+    name int
+);
+
+show tables;
+
+insert into a (name) value ('1');
+insert into a value ('3');
+
+select * from a;
+
+insert into b values ('4');
+insert into b value ('2');
+
+select * from b;
+
+select * from A
+union
+select * from b;
+
+select * from A
+union all
+select * from b;
+
+# intersect 가 mysql에서 지원하지 않음 다음과 같이 사용
+select a.name from a, b
+where a.name = b.name;
+
+# minus
+select a.name from A
+where a.name not in (select name from b);
+
+drop table a;
+drop table b;
+
+show tables;
+-- ----------------------------
+
+# 순위를 매기는 함수
+select sal, ename, rank() over (order by sal desc) ranking
+from emp;
