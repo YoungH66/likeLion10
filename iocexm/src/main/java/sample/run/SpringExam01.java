@@ -30,16 +30,34 @@ public class SpringExam01 {
         bean1.setName("YH");
         System.out.println(bean1);
 
-        MyBean bean2 = context.getBean(MyBean.class);   // id를 알려주지 않고, 타입만 알려줌
+//        MyBean bean2 = context.getBean(MyBean.class);   // id를 알려주지 않고, 타입만 알려줌
+         MyBean bean2 = context.getBean("myBean2", MyBean.class);  // id도 같이 넘겨줄수 있다.
         bean2.setName("extra");
         System.out.println(bean2);
         // bean1이 bean2로 덮어씌어 졌다.
         // 기본은 싱글턴이기 때문에 getBean으로 리턴해온 대상이 값은 값이다.
+        // myBean2를 새로 만들어서 해결 가능
         System.out.println(bean1);
 
         // 같은 인스턴스이다.
         if(bean1==bean2)
             System.out.println("same..");
+        else System.out.println("different..");
+
+        MyBean bean3 = context.getBean("myBean", MyBean.class);
+        if(bean3 == bean1)
+            System.out.println("same..");
+        else System.out.println("different..");
+
+        // 같이 myBean3로 했지만, scope를 prototype으로 했더니 결과가 달라짐.
+        MyBean bean4 = context.getBean("myBean3", MyBean.class);
+        bean4.setName("proto");
+
+        MyBean bean5 = context.getBean("myBean3", MyBean.class);
+        bean5.setName("proto2");
+
+        System.out.println(bean4);
+        System.out.println(bean5);
         // 3. xml을 통해서 알려줌  <- 현재는 많이 사용하지 않음.
     }
 }
