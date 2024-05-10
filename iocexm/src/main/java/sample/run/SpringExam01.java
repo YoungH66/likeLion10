@@ -21,6 +21,7 @@ public class SpringExam01 {
 
         // BeanFactory  -- 빈을 생성하는데 간단한 기능만 포함하고 있다. aop같은 기술을 사용할 수 없다.
         // ApplicationContext 사용. 공장이 생성될때 어떤 빈을 생성해야 할지 결정(MyBeanConfig.class)
+        // ApplicationContext는 미리 만든다.
         System.out.println("ApplicationContext 생성전...");
         ApplicationContext context = new AnnotationConfigApplicationContext(MyBeanConfig.class);
         System.out.println("ApplicationContext 생성후...");

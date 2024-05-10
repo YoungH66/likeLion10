@@ -9,7 +9,7 @@ public class Dice {
 
     public Dice(int face) {
         this.face = face;
-        System.out.println("roll the dice.. face = " + face);
+        System.out.println("roll 1d"+face);
     }
 
     public int getNumber(){
