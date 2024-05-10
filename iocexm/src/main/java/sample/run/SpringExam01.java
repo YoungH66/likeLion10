@@ -58,6 +58,10 @@ public class SpringExam01 {
 
         System.out.println(bean4);
         System.out.println(bean5);
+
+        // 초기화가 된 bean 사용
+        MyBean bean6 = context.getBean("myBean4", MyBean.class);
+        System.out.println(bean6);
         // 3. xml을 통해서 알려줌  <- 현재는 많이 사용하지 않음.
     }
 }
