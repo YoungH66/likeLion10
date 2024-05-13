@@ -5,8 +5,9 @@ import org.example.iocexm.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component("userService")
+//@Service
 public class UserServiceImpl implements UserService{
     // autowired를 필드에 걸어서 사용할 수 있다. 필드 기반 주입. 단, 지양하는 방식임
 //    @Autowired
@@ -22,8 +23,8 @@ public class UserServiceImpl implements UserService{
 
     // 설정자 주입 위해서 필요
     // component 사용할때 기본은 생성자 주입이라 autowired 붙이면 설정자 주입으로 할 수 있음.
-    @Autowired
-    @Qualifier("userCaramiDaoImpl")
+//    @Autowired
+//    @Qualifier("userDaoImpl")
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
