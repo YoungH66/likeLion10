@@ -3,8 +3,9 @@ package org.example.iocexm.controller;
 import org.example.iocexm.domain.User;
 import org.example.iocexm.service.UserService;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
-@Component
+@Controller
 public class UserController {
     private UserService userService;
 

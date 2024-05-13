@@ -3,6 +3,7 @@ package org.example.iocexm.service;
 import org.example.iocexm.dao.UserDao;
 import org.example.iocexm.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component("userService")
@@ -13,6 +14,7 @@ public class UserServiceImpl implements UserService{
 
     // setter를 사용하지 않을때
     // 생성자 주입을 위해서 필요
+//    @Autowired
 //    public UserServiceImpl(UserDao userDao) {
 //        this.userDao = userDao;
 //    }
@@ -21,6 +23,7 @@ public class UserServiceImpl implements UserService{
     // 설정자 주입 위해서 필요
     // component 사용할때 기본은 생성자 주입이라 autowired 붙이면 설정자 주입으로 할 수 있음.
     @Autowired
+    @Qualifier("userCaramiDaoImpl")
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }

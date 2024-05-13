@@ -9,5 +9,4 @@ public class IocexmApplication {
     public static void main(String[] args) {
         SpringApplication.run(IocexmApplication.class, args);
     }
-
 }
