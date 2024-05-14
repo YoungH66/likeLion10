@@ -6,8 +6,8 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @ToString
-@NoArgsConstructor
-@Setter
+//@NoArgsConstructor
+//@Setter
 public class User {
     private Long id;
     private String name;
