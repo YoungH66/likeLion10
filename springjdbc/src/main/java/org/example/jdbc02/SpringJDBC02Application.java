@@ -18,9 +18,18 @@ public class SpringJDBC02Application {
     @Bean
     public CommandLineRunner demo(UserDao userDao){
         return args -> {
-//            userDao.insertUser(new User(null, "John", "john@gmail.com"));
+            // insert test
+            // userDao.insertUser(new User(null, "John", "john@gmail.com"));
+
+            // updateEmail test
+            userDao.updateUserEmail("Kim", "KimNew123@example.com");
+
+            // deleteUser test
+            userDao.deleteUser("John");
+
+            // findAllUsers test
             List<User> userList = userDao.findAllUsers();
-            userList.forEach(user -> System.out.println(user.getId() + " - " + user.getUsername() + " - " + user.getEmail()));
+            userList.forEach(user -> System.out.println(user.getId() + " - " + user.getName() + " - " + user.getEmail()));
         };
     }
 }

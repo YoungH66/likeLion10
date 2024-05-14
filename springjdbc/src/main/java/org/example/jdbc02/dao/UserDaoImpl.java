@@ -36,7 +36,7 @@ public class UserDaoImpl implements UserDao{
     @Override
     public void insertUser(User user) {
         jdbcTemplate.update("INSERT INTO users(name, email) VALUES (?,?)"
-                , user.getUsername(), user.getEmail());
+                , user.getName(), user.getEmail());
     }
 
     @Override
@@ -47,11 +47,11 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public void updateUserEmail(String name, String email) {
-
+        jdbcTemplate.update("UPDATE users SET email = ? WHERE name = ?", email, name);
     }
 
     @Override
     public void deleteUser(String name) {
-
+        jdbcTemplate.update("DELETE FROM users WHERE name = ?", name);
     }
 }
