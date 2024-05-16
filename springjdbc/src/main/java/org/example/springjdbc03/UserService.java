@@ -20,7 +20,8 @@ public class UserService {
         transactionTemplate.execute(status -> {
             jdbcTemplate.update("INSERT INTO users (name, email) VALUES (?, ?)", name, email);
             if(email.contains("error")){
-                status.setRollbackOnly();
+                // 아래 setRollbackOnly가 없더라도, 예외가 발생하면 해당 블럭이 롤백대상이 된다.
+//                status.setRollbackOnly();
                 throw new RuntimeException("simulated error to trigger rollback");
             }
             jdbcTemplate.update("UPDATE users SET email = ? WHERE name = ?",  "updated.email@example.com", name);
