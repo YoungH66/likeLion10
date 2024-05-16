@@ -14,7 +14,7 @@ public class SpringJdbc06Application {
     @Bean
     public CommandLineRunner demo(UserDao userDao) {
         return args -> {
-            User user = new User(null, "Esther", "esther@exam.com");
+            User user = new User(null, "Esther22", "esther@exam.com");
             userDao.insertUser(user);
             System.out.println("user 입력 성공");
         };
