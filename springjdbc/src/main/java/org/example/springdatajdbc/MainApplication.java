@@ -7,8 +7,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,6 +48,24 @@ public class MainApplication {
                     new User(null, "Charlie", "charlie@example.com"),
                     new User(null, "David", "david@example.com")
             );
+            // Prepare SQL query for batch update
+            String sql = "INSERT INTO users (name, email) VALUES (?, ?)";
+
+            // Execute batch update
+            int[] updateCounts = jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+                public void setValues(PreparedStatement ps, int i) throws SQLException {
+                    User user = users.get(i);
+                    ps.setString(1, user.getName());
+                    ps.setString(2, user.getEmail());
+                }
+
+                public int getBatchSize() {
+                    return users.size();
+                }
+            });
+
+            System.out.println("Batch update completed. Number of rows affected: " + Arrays.toString(updateCounts));
         };
     }
-}
+};
+

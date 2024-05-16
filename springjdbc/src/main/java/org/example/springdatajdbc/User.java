@@ -17,7 +17,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @AllArgsConstructor
 public class User {
     @Id
-    private long id;
+    private Long id;
     private String name;
     private String email;
 
