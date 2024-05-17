@@ -19,7 +19,9 @@ public class AopExamApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("run test..");
         System.out.println(service.doSomething());
-        
+
         service.hello();
+
+        service.setName("kim");
     }
 }
