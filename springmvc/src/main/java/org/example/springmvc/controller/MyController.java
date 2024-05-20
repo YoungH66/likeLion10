@@ -1,8 +1,11 @@
 package org.example.springmvc.controller;
 
+import ch.qos.logback.core.model.Model;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -24,6 +27,25 @@ public class MyController {
     @GetMapping("/contact")
     public String contact(){
         return "contact";
+    }
+
+    @ResponseBody
+    @GetMapping("rest")
+    public String rest(){
+        return "restbody test!!";
+    }
+
+    @GetMapping("greeting")
+    public String greet(String name, int age, HttpServletRequest request){
+        // http://localhost/greeting?name=yh
+        // ?name=yh&age=20 쿼리문자열
+        System.out.println(name);
+        System.out.println(age);
+
+        System.out.println("request ::: " + request.getParameter("name"));
+        System.out.println("request ::: " + request.getParameter("age"));
+
+        return "greeting";
     }
 
 //    @Bean
