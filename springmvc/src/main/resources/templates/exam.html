@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf Example</title>
+</head>
+<body>
+<h1>Thymeleaf Example</h1>
+<p>username : <span th:text="${username}"></span> </p>
+
+<div th:object="${language}">
+    Languages: <span th:text="*{[0]}"></span>,<span th:text="*{[1]}"></span>,<span th:text="*{[2]}"></span>
+</div>
+</body>
+</html>

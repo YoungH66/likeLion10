@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>ProductList</title>
+</head>
+<body>
+    <h1>Product List</h1>
+    <table>
+        <tr>
+            <th>상품번호</th>
+            <th>상품명</th>
+            <th>보유량변동</th>
+        </tr>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.ptNum}"></td>
+            <td th:text="${product.pName}"></td>
+            <td th:text="${product.resrv}"></td>
+        </tr>
+    </table>
+
+    <ul>
+        <li th:each="product : ${products}" th:text="${product.pName} + ' - ' + ${product.resrv}"></li>
+    </ul>
+
+    <div th:include="common/footer :: footer"></div>
+</body>
+</html>
