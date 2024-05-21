@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,8 +63,28 @@ public class ExamController {
     // --  이 값을 메시지프로퍼티를 이용해서 출력하도록 작성
     //Controller나 메서드명은 원하는대로 작성하셔도 좋습니다.
 
-    
 
+    // =========
+    @GetMapping("/list")
+    public String showList(Model model){
+        List<String> items = Arrays.asList("Item 1", "Item 2", "Item 3", "Item 4", "Item 5",
+                                            "Item 6", "Item 7", "Item 8", "Item 9", "Item 10");
+        model.addAttribute("items", items);
+        return "list";
+    }
 
+    @GetMapping("/datetime")
+    public String showDatetime(Model model){
+        LocalDate date = LocalDate.now();
+        LocalDateTime dateTime = LocalDateTime.now();
+        LocalTime time = LocalTime.now();
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
 
+        model.addAttribute("currentDate", date);
+        model.addAttribute("currentDateTime", dateTime);
+        model.addAttribute("currentTime", time);
+        model.addAttribute("currentZonedDateTime", zonedDateTime);
+
+        return "datetime";
+    }
 }
