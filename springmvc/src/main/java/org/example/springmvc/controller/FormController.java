@@ -21,6 +21,7 @@ public class FormController {
         if(result.hasErrors()){
             return "form";
         }
+        System.out.println(userForm.getUsername() + " :: " + userForm.getPassword());
         return "result";
     }
 }
