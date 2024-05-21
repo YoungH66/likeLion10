@@ -4,9 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-@Getter
+//@Getter
 public class Product {
-    private int ptNum;
-    private String pName;
-    private double resrv;
+    private int id;
+    private String name;
+    private double price;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
 }

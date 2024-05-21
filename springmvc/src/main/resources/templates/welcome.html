@@ -5,10 +5,10 @@
     <title>Welcome page</title>
 </head>
 <body>
-<h1 th:text="${welcomeMsg}"></h1>
+<h1 th:text="${welocmeMsg}"></h1>
 
 <ul>
-    <li th:each=" items : ${items}" th:text="${items.name}"></li>
+    <li th:each=" item : ${itemList}" th:text="${item.name}"></li>
 </ul>
 
 <div th:include="common/footer :: footer"></div>

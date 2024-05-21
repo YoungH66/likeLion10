@@ -2,8 +2,12 @@ spring:
   application:
     name: springmvc
 
-    messages:
-      basename: messages
+  messages:
+    basename: messages
+    encoding: UTF-8
+    cache-duration: 0
+
+
 
 server:
-  port: 80
+  port: 9999
