@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -16,6 +17,11 @@ import java.time.format.DateTimeFormatter;
 
 @Controller
 public class VisitController {
+    @PostMapping("/visit")
+    public String visit(){
+        return "result";
+    }
+
     @GetMapping("/visit")
     public String showVisit(
             @CookieValue(name = "lastVisit", defaultValue = "N/A") String lastVisit,

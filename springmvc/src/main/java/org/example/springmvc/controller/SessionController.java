@@ -1,18 +1,20 @@
 package org.example.springmvc.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 @Controller
 @SessionAttributes("visitCount2")
 public class SessionController {
 
     @ModelAttribute("visitCount2")
-    public Integer initvisitCount2() {
+    public Integer initVisitCount2() {
         return 0;
     }
 
@@ -21,6 +23,21 @@ public class SessionController {
         visitCount2++;
         model.addAttribute("visitCount2", visitCount2);
         return "visit2";
+    }
+
+    //    // 세션 전체 초기화
+//    @GetMapping("resetVisit")
+//    public String resetVisit(SessionStatus status) {
+//        status.setComplete();
+//        return "redirect:/visit2";
+//    }
+
+    // 특정 세션만 초기화
+    @GetMapping("resetVisit")
+    public String resetVisit(HttpSession session) {
+        session.removeAttribute("visitCount2");
+//        session.invalidate();
+        return "redirect:/visit2";
     }
 
 

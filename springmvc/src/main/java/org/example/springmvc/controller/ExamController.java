@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.*;
@@ -18,6 +19,12 @@ import java.util.List;
 
 @Controller
 public class ExamController {
+    @GetMapping("/guest/{name}")
+    public String guest(@PathVariable String name, Model model){
+        System.out.println(name);
+        return "redirect:/datetime";
+    }
+
     @GetMapping("/welcome")
     public String welcome(Model model){
         model.addAttribute("welocmeMsg","환영합니다^^  spring MVC를 이용해 보겠습니다.");

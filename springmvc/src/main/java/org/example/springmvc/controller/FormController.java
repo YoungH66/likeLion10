@@ -1,5 +1,6 @@
 package org.example.springmvc.controller;
 
+import jakarta.validation.Valid;
 import org.example.springmvc.domain.UserForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +18,7 @@ public class FormController {
     }
 
     @PostMapping("/submitForm")
-    public String submitForm(@ModelAttribute("userForm") UserForm userForm, BindingResult result){
+    public String submitForm(@Valid @ModelAttribute("userForm") UserForm userForm, BindingResult result){
         if(result.hasErrors()){
             return "form";
         }
