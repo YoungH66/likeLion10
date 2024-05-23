@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Friend List</title>
-  <link rel="stylesheet" th:href="@{/css/friend.css}">
+<!--  <link rel="stylesheet" th:href="@{/css/friend.css}">-->
+  <link rel="stylesheet" th:href="@{/css/yorha.css}">
 </head>
 <body>
 <h1>Friend List</h1>
@@ -26,6 +27,16 @@
   </tbody>
 </table>
 
-<a th:href="@{friends/add}">AddFriend</a>
+
+<a class = "addFriendLink" th:href="@{friends/add}">AddFriend</a>
+
+<div th:if="${friends.totalPages > 1}">
+  <ul>
+    <li th:each="i : ${#numbers.sequence(1, friends.totalPages)}">
+      <a th:href="@{/friends(page=${i})}" th:text="${i}" ></a>
+    </li>
+  </ul>
+</div>
+
 </body>
 </html>
