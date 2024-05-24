@@ -7,34 +7,24 @@
     background-color: #f9f9f9;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.form-container h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-.form-container div {
-    margin-bottom: 15px;
-}
+
 .form-container label {
-    display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
-.form-container input,
+.form-container input[type="text"],
+.form-container input[type="password"],
 .form-container textarea {
     width: 100%;
     padding: 8px;
+    margin-bottom: 15px;
     border: 1px solid #ddd;
     border-radius: 4px;
     box-sizing: border-box;
 }
-.form-container textarea {
-    height: 100px;
-    resize: vertical;
-}
-.form-container button {
+.form-container input[type="submit"] {
     width: 100%;
-    padding: 10px 0;
+    padding: 10px;
     background-color: #28a745;
     color: white;
     border: none;
@@ -42,6 +32,10 @@
     cursor: pointer;
     font-size: 16px;
 }
-.form-container button:hover {
+.form-container input[type="submit"]:hover {
     background-color: #218838;
+}
+
+.content-box{
+    height: 200px;
 }
