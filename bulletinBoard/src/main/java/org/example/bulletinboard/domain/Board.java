@@ -20,6 +20,7 @@ public class Board {
     private Long id;
     private String name;
     private String title;
+    private String password;
     private String content;
     @Column("created_at")
     private LocalDate createdAt;

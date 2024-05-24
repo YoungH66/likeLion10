@@ -9,9 +9,15 @@
 <div class="post-container">
     <h1 th:text="${board.title}">Title</h1>
     <div>
-        <strong>Name: </strong> <span th:text="${board.name}">name</span>
-        <strong>Content: </strong> <span th:text="${board.content}">content</span>
-        <strong>Created At: </strong> <span th:text="${board.createdAt}">createdAt</span>
+        <div>
+            <strong>Name: </strong> <span th:text="${board.name}">name</span>
+        </div>
+        <div>
+            <strong>Content: </strong> <span th:text="${board.content}">content</span>
+        </div>
+        <div>
+            <strong>Created At: </strong> <span th:text="${board.createdAt}">createdAt</span>
+        </div>
     </div>
     <div class="funtion">
         <a th:href="@{/list}">List</a>

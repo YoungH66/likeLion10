@@ -1,6 +1,7 @@
 package org.example.bulletinboard.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.PackagePrivate;
 import org.example.bulletinboard.domain.Board;
 import org.example.bulletinboard.service.BoardService;
 import org.springframework.data.domain.Page;
@@ -8,10 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,6 +33,20 @@ public class BoardController {
         Board board = boardService.findPostById(id);
         model.addAttribute("board", board);
         model.addAttribute("currentPage", page);
-        return "view";
+        return "/view";
+    }
+
+    @GetMapping("/write")
+    public String writeForm( Model model) {
+        model.addAttribute("board", new Board());
+        return "/WriteForm";
+    }
+
+    @PostMapping("/write")
+    public String write(@ModelAttribute Board board,
+                        RedirectAttributes redirectAttributes) {
+        boardService.editPost(board);
+        redirectAttributes.addFlashAttribute("message", "write successfully");
+        return "redirect:/list";
     }
 }
