@@ -10,6 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class BoardService {
@@ -35,8 +37,16 @@ public class BoardService {
 
     // 게시글 삭제
     @Transactional
-    public void deletePost(Long id) {
-        boardRepository.deleteById(id);
+    public boolean deletePost(Long id, String password) {
+        Optional<Board> optionalBoard = boardRepository.findById(id);
+        if (optionalBoard.isPresent()) {
+            Board board = optionalBoard.get();
+            if (board.getPassword().equals(password)) {
+                boardRepository.deleteById(id);
+                return true;
+            }
+        }
+        return false;
     }
 
     // 페이징 처리된 게시글 목록 조회
