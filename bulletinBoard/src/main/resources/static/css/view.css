@@ -1,0 +1,26 @@
+.post-container {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin: 40px;
+}
+.post-container h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+.post-container strong {
+    display: block;
+    margin-top: 10px;
+}
+.post-container .actions {
+    margin-top: 20px;
+}
+.post-container .actions a {
+    margin-right: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+.post-container .actions a:hover {
+    text-decoration: underline;
+}

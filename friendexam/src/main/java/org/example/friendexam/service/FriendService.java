@@ -40,7 +40,8 @@ public class FriendService {
 
     // 페이징 처리된 친구 목록 조회
     public Page<Friend> findAllFriends(Pageable pageable){
-        Pageable sortedByDescId = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
+        Pageable sortedByDescId = PageRequest.of(pageable.getPageNumber(),
+                pageable.getPageSize(), Sort.by(Sort.Direction.ASC, "id"));
         return friendRepository.findAll(sortedByDescId);
     }
 }

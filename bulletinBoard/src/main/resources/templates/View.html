@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>DetailPost</title>
+    <link rel="stylesheet" th:href="@{/css/view.css}">
+</head>
+<body>
+<div class="post-container">
+    <h1 th:text="${board.title}">Title</h1>
+    <div>
+        <strong>Name: </strong> <span th:text="${board.name}">name</span>
+        <strong>Content: </strong> <span th:text="${board.content}">content</span>
+        <strong>Created At: </strong> <span th:text="${board.createdAt}">createdAt</span>
+    </div>
+    <div class="funtion">
+        <a th:href="@{/list}">List</a>
+        <a th:href="@{/edit(id=${board.id})}">Edit</a>
+        <a th:href="@{/delete(id=${board.id})}">Delete</a>
+    </div>
+</div>
+</body>
+</html>

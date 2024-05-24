@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: bulletinBoard
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/examplesdb
+    username: urstory
+    password: u1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+server:
+  port: 80
