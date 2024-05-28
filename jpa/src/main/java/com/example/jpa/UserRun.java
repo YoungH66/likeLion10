@@ -38,15 +38,20 @@ public class UserRun {
 //            System.out.println("user1 != user2");
 
 
-        //update
+//        //update
+//        User user1 = entityManager.find(User.class, 1L);
+//        user1.setEmail("new_user1@gmail.com");
+//
+//        user1.setName("updatedUser001");
+//        user1.setName("updatedUser002");
+//        user1.setEmail("new_user2@gmail.com");
+//
+        //delete
         User user1 = entityManager.find(User.class, 1L);
-        user1.setEmail("new_user1@gmail.com");
-
-        user1.setName("updatedUser001");
-        user1.setName("updatedUser002");
-        user1.setEmail("new_user2@gmail.com");
+        entityManager.remove(user1);
 
         //이때 DB에 저장함.
         entityManager.getTransaction().commit();
+
     }
 }

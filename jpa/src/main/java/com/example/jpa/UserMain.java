@@ -26,10 +26,11 @@ public class UserMain {
 //        log.info("Created user: " + yhUser.getName());
 //        log.info("user email : {}", yhUser.getEmail());
         User user = new User();
-        user.setId(1L);
-        user.setName("newUser_Main_001");
-        user.setEmail("newEmail_Main_001@gmail.com");
+        user.setId(2L);
+//        user.setName("newUser_Main_001");
+//        user.setEmail("newEmail_Main_001@gmail.com");
 
-        userDAO.updateUser(user);
+        userDAO.deleteUser(user);
+//        userDAO.updateUser(user);
     }
 }
