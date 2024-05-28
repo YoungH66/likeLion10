@@ -5,12 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Table(name = "students")
+@Table(name = "authors")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Student {
+public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,12 +21,10 @@ public class Student {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "school_id")
-    private School school;
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Book> students = new ArrayList<>();
 
-    public Student(String name, School school) {
+    public Author(String name) {
         this.name = name;
-        this.school = school;
     }
 }
