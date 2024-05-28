@@ -5,6 +5,20 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 public class UserDAO {
+
+    public void updateUser(User user) {
+        EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+        try {
+            em.getTransaction().begin();
+
+//            User findUser = em.find(User.class, user.getId());
+            em.merge(user);
+
+            em.getTransaction().commit();
+        }finally {
+            em.close();
+        }
+    }
     public User findUser(Long id){
         EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
         try {
