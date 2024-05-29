@@ -4,6 +4,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Set;
+
 @Slf4j
 public class EmployeeExamMain {
     private static void find(){
@@ -59,7 +61,7 @@ public class EmployeeExamMain {
         try {
             Employee employee = em.find(Employee.class, 3L);
             em.remove(employee);
-            log.info("deleted Complete");
+            log.info("delete Complete");
             em.getTransaction().commit();
         }catch (Exception e){
             if(em.getTransaction().isActive())
@@ -76,6 +78,9 @@ public class EmployeeExamMain {
         try {
             Employee employee = em.find(Employee.class, 3L);
             employee.setName("Queen");
+
+            Project project = em.find(Project.class, 2L);
+
 
             em.getTransaction().commit();
         }catch (Exception e){
