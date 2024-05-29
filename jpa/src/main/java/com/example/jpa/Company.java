@@ -16,9 +16,9 @@ public class Company {
     private String name;
 
     @Embedded
-    private String address;
+    private Address address;
 
-    public Company(String name, String address) {
+    public Company(String name, Address address) {
         this.name = name;
         this.address = address;
     }
