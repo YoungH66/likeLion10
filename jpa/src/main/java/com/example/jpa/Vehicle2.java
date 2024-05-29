@@ -17,17 +17,17 @@ public class Vehicle2 {
 }
 
 @Entity
+@DiscriminatorValue("CAR")
 @Getter
 @Setter
-@DiscriminatorValue("CAR")
-class Car2 extends Vehicle2 {
+class Car2 extends Vehicle2{
     private int seatCount;
 }
 
 @Entity
+@DiscriminatorValue("TRUCK")
 @Getter
 @Setter
-@DiscriminatorValue("TRUCK")
 class Truck2 extends Vehicle2 {
-    private double payloadCapacity;
+    private double payloadCapactiy;
 }

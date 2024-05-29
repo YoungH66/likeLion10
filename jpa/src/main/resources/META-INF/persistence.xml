@@ -21,6 +21,7 @@
         <class>com.example.jpa.Truck</class>
         <class>com.example.jpa.Car2</class>
         <class>com.example.jpa.Truck2</class>
+        <class>com.example.jpa.Company</class>
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/examplesdb"/>
