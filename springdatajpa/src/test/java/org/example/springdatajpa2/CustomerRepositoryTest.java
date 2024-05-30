@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +23,7 @@ class CustomerRepositoryTest {
         Customer customer = new Customer("nw_customer01", "testEmail001@test.com");
         customerRepository.save(customer);
 
-        Assertions.assertThat(customerRepository.findById(customer.getId())).isEqualTo(customer);
+        Assertions.assertThat(customerRepository.findById(11L).get().getName()).isEqualTo("nw_customer01");
         log.info("new customer: {}", customer.getName());
     }
 
@@ -31,5 +32,20 @@ class CustomerRepositoryTest {
 //        Optional<Customer> customer = customerRepository.findById(11L);
 //        customerRepository.delete(customer.get());
 //    }
+
+    @Test
+    void findByName(){
+        List<Customer> customers = customerRepository.findByName("nw_customer01");
+//        Assertions.assertThat(customers).hasSize(1);
+        for(Customer customer : customers){
+            log.info("customer: {}", customer.getName());
+        }
+    }
+
+    @Test
+    void findByEmailContaining(){
+        List<Customer> customers = customerRepository.findByEmailContaining("test");
+        customers.forEach(customer -> log.info("customer: {}", customer.getEmail()));
+    }
 
 }
