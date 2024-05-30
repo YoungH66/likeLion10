@@ -6,9 +6,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+//import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
+import java.util.Optional;
 
-import static org.hamcrest.Matchers.equalTo;
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -28,6 +30,29 @@ class UserRepositoryTest {
     @Test
     void findByName(){
         List<User> users = repository.findByName("Kim");
-//        assertThat(users.size().isEqualTo(1));
+        assertThat(users.size()).isEqualTo(18);
+
+        List<User> users2 = repository.findByName("kim");
+        assertThat(users2.size()).isEqualTo(18);
+    }
+
+    @Test
+    void updateEmail(){
+        repository.updateEmail(6L, "modifiedkim@test.com");
+        Optional<User> user = repository.findById(6L);
+        assertThat(user.get().getEmail()).isEqualTo("modifiedkim@test.com");
+    }
+
+//    @Test
+//    void delete(){
+//        repository.deleteById(5L);
+////        Optional<User> user = repository.findById(5L);
+//    }
+
+    @Test
+    void deleteByEmail(){
+        repository.deleteByEmail("kim@gmail.com");
+        Optional<User> user = repository.findById(5L);
+        assertThat(user.isPresent()).isFalse();
     }
 }
