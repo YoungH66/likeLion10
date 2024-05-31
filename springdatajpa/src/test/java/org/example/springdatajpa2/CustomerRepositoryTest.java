@@ -6,6 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.test.context.jdbc.SqlGroup;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +49,16 @@ class CustomerRepositoryTest {
     void findByEmailContaining(){
         List<Customer> customers = customerRepository.findByEmailContaining("test");
         customers.forEach(customer -> log.info("customer: {}", customer.getEmail()));
+    }
+
+    @Test
+    @SqlGroup({
+            @Sql(value = "classpath:db/test.sql",
+                    config = @SqlConfig(encoding = "utf-8", separator = ";", commentPrefix = "--"),
+                    executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    })
+    void findCustomersOlderThanAverage(){
+
     }
 
 }

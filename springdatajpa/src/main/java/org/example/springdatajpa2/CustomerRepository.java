@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Objects;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     // 이름으로 조회
@@ -22,4 +23,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 //    @Query("select c from Customer c where c.email like %:email%")
 //    List<Customer> findByEmailContain(@Param("email") String email);
     List<Customer> findByEmailContaining(String email);
+
+    @Query("select c, count(o) from Customer c left join c.orders o group by c")
+    List<Objects[]> findCustomerOrderCount();
+
+
 }
