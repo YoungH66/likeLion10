@@ -36,12 +36,12 @@ public class TodoController {
 
     @PatchMapping
     public Todo updateTodo(@RequestBody Todo todo){
-        return todoService.updateTodo(todo);
+        return todoService.updateTodo(todo.getId());
     }
 
     @DeleteMapping
-    public String deleteTodo(@PathVariable("id") Long id){
-        todoService.deleteTodo(id);
+    public String deleteTodo(@RequestBody Todo todo){
+        todoService.deleteTodo(todo.getId());
         return "ok";
     }
 }
