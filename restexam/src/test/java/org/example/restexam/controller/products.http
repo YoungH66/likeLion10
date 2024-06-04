@@ -1,0 +1,38 @@
+### POST
+POST http://localhost/api/products
+Content-Type: application/json
+
+{
+  "name" : "dummy0-1",
+  "price": 0.98
+}
+
+### POST
+POST http://localhost/api/products
+Content-Type: application/json
+
+{
+  "name" : "dummy0-2",
+  "price": 0.98
+}
+
+### GET
+GET http://localhost/api/products/1
+Content-Type: application/json
+
+### GET
+GET http://localhost/api/products
+Content-Type: application/json
+
+### PUT
+PUT http://localhost/api/products/1
+Content-Type: application/json
+
+{
+  "name": "new_dummy0-1",
+  "price": 3.58
+}
+
+### DELETE
+DELETE http://localhost/api/products/2
+Content-Type: application/json
