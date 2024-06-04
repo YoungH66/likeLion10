@@ -13,3 +13,8 @@ Content-Type: application/json
 
 {"description": "Sample file upload", "tag": "test"}
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+### File Download Test
+GET http://localhost/download
+Accept: image/jpeg

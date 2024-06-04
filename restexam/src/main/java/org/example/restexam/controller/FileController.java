@@ -1,19 +1,38 @@
 package org.example.restexam.controller;
 
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.example.restexam.domain.UploadInfo;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 public class FileController {
+    @GetMapping("/download")
+    public void downloadFile(HttpServletResponse response){
+        Path filePath = Paths.get("c:/temp/upload/cat.jpg");
+        response.setContentType("image/jpeg");
+
+        try {
+            InputStream inputStream = Files.newInputStream(filePath);
+            StreamUtils.copy(inputStream, response.getOutputStream());
+            response.flushBuffer();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @PostMapping("/upload")
     public ResponseEntity<String> handleFileUpload(
             @RequestParam("file") MultipartFile file,
             @RequestPart("info")UploadInfo uploadInfo
