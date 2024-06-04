@@ -33,25 +33,19 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> handleFileUpload(
-            @RequestParam("file") MultipartFile file,
-            @RequestPart("info")UploadInfo uploadInfo
-            ){
+    public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
         String message = "";
-        System.out.println(file.getOriginalFilename() + "===================");
-        System.out.println(uploadInfo.getDescription() + "===================");
-        System.out.println(uploadInfo.getTag() + "===================");
-
         try {
             InputStream inputStream = file.getInputStream();
-            StreamUtils.copy(inputStream, new FileOutputStream("C:/temp/upload/"+file.getOriginalFilename()));
-            message = "SUCCESSFULLY UPLOADED "  + file.getOriginalFilename() + "!";
+            StreamUtils.copy(inputStream,
+                    new FileOutputStream("c:/temp/upload/"+file.getOriginalFilename()));
+
+            message =  "You successfully uploaded " + file.getOriginalFilename() + "!";
             return ResponseEntity.ok().body(message);
-        }catch (IOException e) {
-            message = "FAIL TO UPLOAD " + file.getOriginalFilename() + "!";
-            return ResponseEntity.ok().body(message);
-//            e.printStackTrace();
+
+        } catch (Exception e) {
+            message = "FAIL to upload " + file.getOriginalFilename() + "!";
+            return ResponseEntity.badRequest().body(message);
         }
-//        return ResponseEntity.ok("File uploaded successfully");
     }
 }
