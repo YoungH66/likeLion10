@@ -1,12 +1,14 @@
 package org.example.filterexam3;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @Slf4j
@@ -40,6 +42,29 @@ public class UserController {
     @GetMapping("/welcome")
     public String welcome() {
         return "welcome";
+    }
+
+    @GetMapping("/info")
+    // ResponseBody를 사용하면 뷰 없이 리턴값을 볼 수 있다. 이 경우 info
+    @ResponseBody
+    public String info(HttpServletRequest request) {
+        // 아무나 보여줄 수 있는 페이지가 아님
+        // 로그인에 성공한 사용자만 접근 가능
+        // 쿠키정보를 통해서 판별할 수 있음
+        String auth = null;
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null) {
+            for(Cookie cookie : cookies) {
+                if(cookie.getName().equals("auth")) {
+                    auth = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if(auth != null)    // 인증된 사용자인지 검사
+            return "info";
+        else return "redirect:/loginform";
     }
 
 }
