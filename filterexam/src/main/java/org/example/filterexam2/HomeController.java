@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class HomeController {
-//    private final UserService userService;
+    private final UserService userService;
 
-    public HomeController() {
-        log.info("HomeController Constructor run::::::::::::");
-    }
+//    public HomeController() {
+//        log.info("HomeController Constructor run::::::::::::");
+//    }
 
     @GetMapping("/")
     public String home() {
@@ -30,6 +30,7 @@ public class HomeController {
 
     @GetMapping("/hello")
     public String hello() {
+        userService.list();
         log.info("hello() run:::::");
         return "hello";
     }
