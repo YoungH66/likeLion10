@@ -9,14 +9,13 @@ import java.io.IOException;
 public class UserFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-
         try {
             HttpServletRequest request = (HttpServletRequest) servletRequest;
             String auth = null;
             Cookie[] cookies = request.getCookies();
-            if(cookies != null) {
-                for(Cookie cookie : cookies) {
-                    if(cookie.getName().equals("auth")) {
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("auth")) {
                         auth = cookie.getValue();
                         break;
                     }
@@ -31,5 +30,6 @@ public class UserFilter implements Filter {
         }finally {
             UserContext.clear();
         }
+
     }
 }

@@ -1,6 +1,5 @@
 package org.example.filterexam3;
 
-import org.example.filterexam2.UserFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
