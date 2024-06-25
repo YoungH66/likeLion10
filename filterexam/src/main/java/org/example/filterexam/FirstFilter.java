@@ -1,6 +1,7 @@
 package org.example.filterexam;
 
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +11,8 @@ import java.io.IOException;
 // 필터도 사용되기 위해 Component 붙여야 함
 @Slf4j
 @Component
+// WebFilter로 어느 url에 Filter를 적용할 지 지정할 수 도 있다.
+@WebFilter(urlPatterns = "/hi")
 public class FirstFilter implements Filter {
 
     public FirstFilter(){
