@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class UserController {
+
     @GetMapping("/loginform")
     public String loginform(){
         return "loginform";
@@ -29,19 +30,19 @@ public class UserController {
             //이렇게 생성된 쿠키는 클라이언에게 보내져야한다.
             response.addCookie(cookie);
         }
-
         return "redirect:/welcome";
     }
 
     @GetMapping("/welcome")
     public String welcome(){
-
+        // 통신에 있어서 기본적인 헤더가 포함되기 때문에, user 객체가 null은 아니다.
+        // 따라서 user != null은 항상 참이 된다.
+        // 원하는 결과를 위해선 user.getUsername != null 와 같이 변경해야 한다.
         User user = UserContext.getUser();
         if(user != null)
             return "welcome";
         else
             return "redirect:/loginform";
-
     }
 
     @GetMapping("/info")
@@ -59,15 +60,16 @@ public class UserController {
 //                }
 //            }
 //        }
-//
 //        if(auth != null)  //해당 사용자가 로그인한 사용자인지 아닌지에 따라서..
 //            return "info";
 //        else
 //            return "redirect:/loginform";
         User user = UserContext.getUser();
-        if(user != null)
+
+        if(user.getUsername() != null)
             return "info";
         else
             return "redirect:/loginform";
     }
+    
 }

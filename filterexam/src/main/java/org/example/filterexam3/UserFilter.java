@@ -30,6 +30,5 @@ public class UserFilter implements Filter {
         }finally {
             UserContext.clear();
         }
-
     }
 }
