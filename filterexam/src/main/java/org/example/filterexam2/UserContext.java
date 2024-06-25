@@ -3,7 +3,7 @@ package org.example.filterexam2;
 // 이 ThreadLocal 을 가지는 객체
 
 public class UserContext {
-    // 아직 null로 초기화.. 
+    // 아직 null로 초기화..
     private static final ThreadLocal<User> USER_THREAD_LOCAL = ThreadLocal.withInitial(()->null);
 
     public static void setUser(User user) {
@@ -12,5 +12,9 @@ public class UserContext {
 
     public static User getUser() {
         return USER_THREAD_LOCAL.get();
+    }
+
+    public static void clear(){
+        USER_THREAD_LOCAL.remove();
     }
 }
