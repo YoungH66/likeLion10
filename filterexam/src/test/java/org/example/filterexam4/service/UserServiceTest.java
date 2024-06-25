@@ -14,13 +14,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserServiceTest {
     @Autowired
     UserService userService;
+
     @Test
     void registerNewuser(){
         User user = new User();
-        user.setName("kang");
-        user.setUsername("kang");
+        user.setName("yh");
+        user.setUsername("yh");
         user.setPassword("1234");
-        user.setEmail("kang@kang.com");
+        user.setEmail("yh@yh.com");
 
         User user1 = userService.register(user);
 

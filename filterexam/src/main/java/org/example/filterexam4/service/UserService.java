@@ -27,5 +27,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // 회원정보 보기
+    //회원정보보기
+    @Transactional(readOnly = true)
+    public User findByUsername(String username){
+        return userRepository.findByUsername(username);
+    }
 }
