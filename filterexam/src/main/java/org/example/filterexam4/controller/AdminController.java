@@ -10,4 +10,9 @@ public class AdminController {
     public String admin() {
         return "admin";
     }
+
+    @GetMapping("/access-denied")
+    public String accessDenied() {
+        return "access-denied";
+    }
 }
