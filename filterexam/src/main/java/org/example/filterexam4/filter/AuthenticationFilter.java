@@ -36,6 +36,7 @@ public class AuthenticationFilter implements Filter {
                 // 요청 url 에 따라서 http://localhost8080/admin -- Role 이 ROLE_ADMIN 인 사용자에게만 인가되도록
                 User user = userService.findByUsername(auth);
                 if(user != null) {
+
                     user.setUsername(auth);
                     UserContext.setUser(user);
 

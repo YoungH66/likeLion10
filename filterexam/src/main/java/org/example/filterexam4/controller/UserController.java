@@ -38,7 +38,7 @@ public class UserController {
             response.addCookie(cookie);  //쿠키는 같은 이름의 쿠키가 2개 존재할 수 없어요..
             // 같은이름으로 쿠키가 다시 들어오면 쿠키는 덮어써요.
             //이것을 이용해서 로그아웃을 구현할 수 있어요.
-            return "redirect:/info";
+            return "redirect:/welcome";
         }else {
             return "redirect:/loginform";
         }
