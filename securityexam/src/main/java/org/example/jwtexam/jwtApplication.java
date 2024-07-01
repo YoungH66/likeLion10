@@ -1,5 +1,6 @@
 package org.example.jwtexam;
 
+import io.jsonwebtoken.Claims;
 import org.example.jwtexam.util.JwtTokenizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,22 @@ public class jwtApplication {
 			String accessToken = jwtTokenizer.createAccessToken(
 					1L, "test@test.com", "test", "testuser", Arrays.asList("ROLE_USER", "ROLE_ADMIN")
 			);
-			log.info("AccessToken {}", accessToken);
+			log.info("AccessToken :: {}", accessToken);
+
+			String refreshToken = jwtTokenizer.createRefreshToken(
+					1L, "test@test.com", "test", "testuser", Arrays.asList("ROLE_USER", "ROLE_ADMIN")
+			);
+			log.info("RefreshToken :: {}", refreshToken);
+
+//			Long id = jwtTokenizer.getUserIdFromToken(accessToken);
+//			log.info("User id :: {}", id);
+
+			Claims claims = jwtTokenizer.parseAccessToken(accessToken);
+			log.info("Access Token's Claims :: {}", claims);
+			log.info("userId :: {}", claims.get("userId"));
+
+//			Claims refreshTokenClaims = jwtTokenizer.parseRefreshToken(refreshToken);
+//			log.info("Refresh Token's Claims :: {}", refreshTokenClaims);
 		};
 	}
 }
