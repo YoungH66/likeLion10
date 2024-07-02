@@ -2,6 +2,14 @@ POST http://localhost:8080/login
 content-Type: application/json
 
 {
-  "username":"",
-  "password": ""
+  "username":"lion",
+  "password": "1234"
 }
+
+
+###
+GET http://localhost:8080/api/authtest
+Cookie:eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJsaW9uQHRlc3QuY29tIiwidXNlcm5hbWUiOiJsaW9uIiwibmFtZSI6Imxpb24iLCJ1c2VySWQiOjMsInJvbGVzIjpbXSwiaWF0IjoxNzE5ODg5MDQ3LCJleHAiOjE3MjA0OTM4NDd9.uZ5ey_5ftGp34YxOG0oMqXsJoa8IyCGAhDWfjDJv3Rw
+
+###
+GET http://localhost:8080/api/authtest
