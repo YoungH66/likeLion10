@@ -18,7 +18,7 @@ public class JwtTokenizer {
     private final byte[] accessSecret;
     private final byte[] refreshSecret;
 
-    public static Long ACCESS_TOKEN_EXPIRATION_TIME = 30 * 60 * 1000L;  // 30min.
+    public static Long ACCESS_TOKEN_EXPIRATION_TIME = 1 * 60 * 1000L;  // 1min.
     public static Long REFRESH_TOKEN_EXPIRATION_TIME = 7 * 24 * 60 * 60 * 1000L; // 7d.
 
     public JwtTokenizer(@Value("${jwt.secretKey}") String accessSecret, @Value("${jwt.refreshKey}")String refreshSecret) {

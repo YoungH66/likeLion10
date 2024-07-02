@@ -1,6 +1,7 @@
 package org.example.jwtexam.controller;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.example.jwtexam.domain.RefreshToken;
@@ -90,5 +91,22 @@ public class UserApiController {
     @GetMapping("/api/authtest")
     public String authTest(){
         return "authTest";
+    }
+
+    @PostMapping("/refreshToken")
+    public ResponseEntity refreshToken(HttpServletRequest request){
+        String refreshToken = null;
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null){
+                for(Cookie cookie : cookies){
+                    if("refreshToken".equals(cookie.getName())){
+                        refreshToken = cookie.getValue();
+                        break;
+                    }
+                }
+            }
+
+
+
     }
 }

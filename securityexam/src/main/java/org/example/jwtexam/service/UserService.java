@@ -1,6 +1,8 @@
 package org.example.jwtexam.service;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.example.jwtexam.domain.Role;
 import org.example.jwtexam.domain.User;
 import org.example.jwtexam.repository.RoleRepository;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,5 +36,9 @@ public class UserService {
     @Transactional(readOnly = true)
     public User findByUsername(String username){
         return userRepository.findByUsername(username);
+    }
+
+    public Optional<User> findByProviderAndSocialId(String provider, String socialId){
+        return userRepository.
     }
 }
