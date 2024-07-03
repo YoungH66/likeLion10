@@ -38,7 +38,8 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-    public Optional<User> findByProviderAndSocialId(String provider, String socialId){
-        return userRepository.
+    @Transactional(readOnly = true)
+    public Optional<User> getUser(Long id){
+        return userRepository.findById(id);
     }
 }
