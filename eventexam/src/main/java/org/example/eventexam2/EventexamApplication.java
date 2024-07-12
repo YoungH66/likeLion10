@@ -20,7 +20,11 @@ public class EventexamApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 //        log.info("command add :: hello");
+        System.out.println("Eventexam2Application.run");
+
         System.out.println("command add :: hello");
         publisher.publishEvent("hello");
+
+
     }
 }
