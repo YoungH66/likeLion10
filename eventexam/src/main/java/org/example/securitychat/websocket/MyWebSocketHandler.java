@@ -41,13 +41,13 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 
         }
 
-        synchronized (sessions){
-            for (WebSocketSession webSocketSession : sessions){
-                if(webSocketSession.isOpen()){
-                    webSocketSession.sendMessage(new TextMessage(username + ": " + payload));
-                }
+        //synchronized (sessions){
+        for (WebSocketSession webSocketSession : sessions){
+            if(webSocketSession.isOpen()){
+                webSocketSession.sendMessage(new TextMessage(username + ": " + payload));
             }
         }
+        //}
     }
 
     @Override
