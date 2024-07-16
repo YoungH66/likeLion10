@@ -9,7 +9,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "social_login_info")
-@Getter@Setter
+@Getter
+@Setter
 public class SocialLoginInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,13 +18,13 @@ public class SocialLoginInfo {
 
     private String provider;
     private String socialId;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
     private String uuid;
 
-    public SocialLoginInfo() {
-        // 소셜 로그인한 시간, UUID
-        // 소셜 로그인 이후에 특정한 시간까지만 추가작업을 가능하게 하기 위함
-        this.createAt = LocalDateTime.now();
+    public SocialLoginInfo(){
+        //소셜로그인한 시간, UUID
+        //소셜로그인 이후에 특정한 시간까지만 추가작업을 가능하게 하도록 하려고!!
+        this.createdAt = LocalDateTime.now();
         this.uuid = UUID.randomUUID().toString();
     }
 }

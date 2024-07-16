@@ -13,8 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.jwtexam.jwt.exception.JwtExceptionCode;
 import org.example.jwtexam.jwt.token.JwtAuthenticationToken;
+import org.example.jwtexam.jwt.util.JwtTokenizer;
 import org.example.jwtexam.security.CustomUserDetails;
-import org.example.jwtexam.util.JwtTokenizer;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,12 +30,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
     private final JwtTokenizer jwtTokenizer;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = getToken(request);   // accessToken 얻어냄
+        String token = getToken(request); //accessToken 얻어냄.
         if(StringUtils.hasText(token)){
             try{
                 getAuthentication(token);
@@ -63,24 +61,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String getToken(HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-        if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer ")) {
-            return authorization.substring(7);
-        }
-
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("accessToken".equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
-        }
-
-        return null;
-    }
-
     private void getAuthentication(String token){
         Claims claims = jwtTokenizer.parseAccessToken(token);
         String email = claims.getSubject();
@@ -102,5 +82,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             authorities.add(()->role);
         }
         return authorities;
+    }
+    private String getToken(HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer ")) {
+            return authorization.substring(7);
+        }
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("accessToken".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+
+        return null;
     }
 }

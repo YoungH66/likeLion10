@@ -22,10 +22,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeRequests(authroizeRequest -> authroizeRequest
-                        .requestMatchers("/shop/**", "/test").permitAll()   // 이때 지정한 페이지는 누구든지 접근 가능
-                        .requestMatchers("/user/mypage").hasRole("USER")    // USER인 사용자만 접근 허용
-                        .requestMatchers("/admin/**").hasAnyRole("ADMIN", "SUPERUSER")  // ADMIN, SUPERUSER 접근 허용
-                        .requestMatchers("/admin/abc").hasRole("ADMIN")     // ADMIN인 사용자만 접근 허용
+                        .requestMatchers("/shop/**","/test").permitAll() //이때 지정한 페이지는 누구든지 접근 가능.
+                        .requestMatchers("/user/mypage").hasRole("USER")
+                        .requestMatchers("/admin/abc").hasRole("ADMIN") //구체적인 경로가 먼저 와야 한다.
+                        .requestMatchers("/admin/**").hasAnyRole("ADMIN","SUPERUSER")
                         .anyRequest() //모든 요청
                         .authenticated() //인증을 요구
                 )
@@ -33,15 +33,13 @@ public class SecurityConfig {
 
         return http.build();
     }
-
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
     @Bean
-    public UserDetailsService userDetailsService() {
-        // 실제 프로젝트에서는 이 부분을 사용하는 DB에 있는 사용자 정보를 이용할 수 있도록 작성 필요
+    public UserDetailsService userDetailsService(){
+        //실제 프로젝트에서는 이부분을 우리 DB에 있는 사용자 정보를 이용할 수 있도록 코드를 만들거예요.
         UserDetails user = User.withUsername("user")
                 .password(passwordEncoder().encode("1234"))
                 .roles("USER")
@@ -56,9 +54,9 @@ public class SecurityConfig {
                 .build();
         UserDetails carami = User.withUsername("carami")
                 .password(passwordEncoder().encode("1234"))
-                .roles("ADMIN", "USER")
+                .roles("ADMIN","USER")
                 .build();
 
-        return new InMemoryUserDetailsManager(user, admin, superuser, carami);
+        return new InMemoryUserDetailsManager(user,admin,superuser,carami);
     }
 }

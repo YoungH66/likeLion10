@@ -1,12 +1,12 @@
 package org.example.oauthexam.config;
 
 import lombok.RequiredArgsConstructor;
-
+import org.example.oauthexam.domain.SocialUser;
+import org.example.oauthexam.security.CustomOAuth2AuthenticationSuccessHandler;
 import org.example.oauthexam.security.CustomUserDetailsService;
 import org.example.oauthexam.service.SocialUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,13 +26,14 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final CustomUserDetailsService customUserDetailsService;
+    private final CustomOAuth2AuthenticationSuccessHandler customOAuth2AuthenticationSuccessHandler;
     private final SocialUserService socialUserService;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/userregform","/userreg","/").permitAll()
+                        .requestMatchers("/userregform","/userreg","/","/loginform","/").permitAll()
+                        .requestMatchers("/oauth2/**", "/login/oauth2/code/github","/registerSocialUser","/saveSocialUser").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(csrf -> csrf.disable())
@@ -45,10 +46,12 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(this.oauth2UserService())
                         )
-                        .successHandler()
+                        .successHandler(customOAuth2AuthenticationSuccessHandler)
                 );
+
         return http.build();
     }
+
 
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService() {
@@ -68,11 +71,13 @@ public class SecurityConfig {
             String email = (String) oauth2User.getAttributes().get("email");
             String avatarUrl = (String) oauth2User.getAttributes().get("avatar_url");
 
-            socialUserService.saveOrUpdate(socialId, provider, username, email, avatarUrl);
+            socialUserService.saveOrUpdateUser(socialId, provider, username, email, avatarUrl);
 
             return oauth2User;
         };
     }
+
+
     public CorsConfigurationSource configurationSource(){
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
@@ -83,7 +88,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**",config);
         return source;
     }
-
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

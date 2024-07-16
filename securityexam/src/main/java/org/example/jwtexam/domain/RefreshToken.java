@@ -6,7 +6,8 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "refresh_token")
-@Getter@Setter
+@Getter
+@Setter
 public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

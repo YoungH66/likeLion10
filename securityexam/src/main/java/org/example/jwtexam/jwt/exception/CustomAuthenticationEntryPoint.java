@@ -15,20 +15,30 @@ import java.util.HashMap;
 @Component
 @Slf4j
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    // 시큐리티가 인증되지 않은 사용자가 인증이 필요한 리소스에 접근 할 때 동작하게 하는 인터페이스
-    // 사용자가 인증되지 않았을 경우
-
+    //시큐리티가 인증되지 않은 사용자가 (인증해야만 사용할 수 있는) 리소스에 접근 할때 동작하게 하는 인터페이스
+    //사용자가 인증되지 않았을때.. 어떻게 처리할지를 구현함.
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        String exception = (String) request.getAttribute("exception");
+        String exceptin = (String)request.getAttribute("exception");
 
-        // 어떤 요청인지를 구분
-        // RESTful 로 요청한건지, 그냥 요청한건지 구분해서 다르게 동작하도록 구현
+        //어떤요청인지를 구분..
+        //RESTful로 요청한건지..  그냥 페이지 요청한건지 구분해서 다르게 동작하도록 구현.
         if(isRestRequest(request)){
-            handleRestResponse(request, response, exception);
+            handleRestResponse(request,response,exceptin);
         }else{
-            handlePageResponse(request, response, exception);
+            handlePageResponse(request,response,exceptin);
         }
+    }
+
+    //페이지로 요청이 들어왔을 때 인증되지 않은 사용자라면 무조건 /loginform으로 리디렉션 시키겠다.
+    private void handlePageResponse(HttpServletRequest request, HttpServletResponse response, String exception) throws IOException {
+        log.error("Page Request - Commence Get Exception : {}", exception);
+
+        if (exception != null) {
+            // 추가적인 페이지 요청에 대한 예외 처리 로직을 여기에 추가할 수 있습니다.
+        }
+
+        response.sendRedirect("/loginform");
     }
 
     private boolean isRestRequest(HttpServletRequest request) {
@@ -71,15 +81,5 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         String responseJson = gson.toJson(errorInfo);
         response.getWriter().print(responseJson);
     }
-
-    // 에이지로 요청이 들어왔을때, 인증되지 않은 사용자라면 무조건 /loginform으로 리디렉션 시킨다.
-    private void handlePageResponse(HttpServletRequest request, HttpServletResponse response, String exception) throws IOException {
-        log.error("Page Request - Commence Get Exception : {}", exception);
-
-        if (exception != null) {
-            // 추가적인 페이지 요청에 대한 예외 처리 로직을 여기에 추가할 수 있습니다.
-        }
-
-        response.sendRedirect("/loginform");
-    }
 }
+

@@ -2,7 +2,6 @@ package org.example.oauthexam.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @Entity
 @Table(name = "roles")

@@ -1,4 +1,4 @@
-package org.example.jwtexam.security;
+package org.example.oauthexam.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

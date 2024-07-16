@@ -3,8 +3,8 @@ package org.example.jwtexam.config;
 import lombok.RequiredArgsConstructor;
 import org.example.jwtexam.jwt.exception.CustomAuthenticationEntryPoint;
 import org.example.jwtexam.jwt.filter.JwtAuthenticationFilter;
+import org.example.jwtexam.jwt.util.JwtTokenizer;
 import org.example.jwtexam.security.CustomUserDetailsService;
-import org.example.jwtexam.util.JwtTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,12 +26,12 @@ import java.util.List;
 public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final JwtTokenizer jwtTokenizer;
-    private final CustomAuthenticationEntryPoint customPoint;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/userregform","/userreg","/","/login").permitAll()
+                        .requestMatchers("/userregform","/userreg","/","/login","/refreshToken","/loginform").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenizer), UsernamePasswordAuthenticationFilter.class)
@@ -42,7 +42,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .cors(cors -> cors.configurationSource(configurationSource()))
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(customPoint));
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customAuthenticationEntryPoint));
+
 
         return http.build();
     }
@@ -57,7 +59,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**",config);
         return source;
     }
-
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();

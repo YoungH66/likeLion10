@@ -9,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.example.jwtexam.domain.RefreshToken;
 import org.example.jwtexam.domain.Role;
 import org.example.jwtexam.domain.User;
-import org.example.jwtexam.dto.UserLoginDto;
 import org.example.jwtexam.dto.UserLoginResponseDto;
+import org.example.jwtexam.jwt.util.JwtTokenizer;
+import org.example.jwtexam.security.dto.UserLoginDto;
 import org.example.jwtexam.service.RefreshTokenService;
 import org.example.jwtexam.service.UserService;
-import org.example.jwtexam.util.JwtTokenizer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 @RestController
@@ -78,12 +79,12 @@ public class UserApiController {
         Cookie accessTokenCookie = new Cookie("accessToken",accessToken);
         accessTokenCookie.setHttpOnly(true);  //보안 (쿠키값을 자바스크립트같은곳에서는 접근할수 없어요.)
         accessTokenCookie.setPath("/");
-        accessTokenCookie.setMaxAge(Math.toIntExact(JwtTokenizer.ACCESS_TOKEN_EXPIRATION_TIME/1000)); //30분 쿠키의 유지시간 단위는 초 ,  JWT의 시간단위는 밀리세컨드
+        accessTokenCookie.setMaxAge(Math.toIntExact(JwtTokenizer.ACCESS_TOKEN_EXPIRE_COUNT/1000)); //30분 쿠키의 유지시간 단위는 초 ,  JWT의 시간단위는 밀리세컨드
 
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setMaxAge(Math.toIntExact(JwtTokenizer.REFRESH_TOKEN_EXPIRATION_TIME/1000)); //7일
+        refreshTokenCookie.setMaxAge(Math.toIntExact(JwtTokenizer.REFRESH_TOKEN_EXPIRE_COUNT/1000)); //7일
 
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
@@ -131,7 +132,7 @@ public class UserApiController {
         Cookie accessTokenCookie = new Cookie("accessToken", accessToken);
         accessTokenCookie.setHttpOnly(true);
         accessTokenCookie.setPath("/");
-        accessTokenCookie.setMaxAge(Math.toIntExact( JwtTokenizer.ACCESS_TOKEN_EXPIRATION_TIME / 1000));
+        accessTokenCookie.setMaxAge(Math.toIntExact( JwtTokenizer.ACCESS_TOKEN_EXPIRE_COUNT / 1000));
 
         response.addCookie(accessTokenCookie);
 

@@ -14,22 +14,22 @@ public class SocialUserService {
     private final SocialUserRepository socialUserRepository;
 
     @Transactional
-    // 소셜에서 정보를 가져와서 저장하거나, 이미 존재하면 수정한다.
-    public SocialUser saveOrUpdate(String socialId, String provider, String username, String email, String avatarUrl) {
+    //소셜에서 정보를 가져와서 저장하거나,  이미 있다면 수정하거나..
+    public SocialUser saveOrUpdateUser(String socialId, String provider, String username, String email, String avatarUrl){
         Optional<SocialUser> existingUser = socialUserRepository.findBySocialIdAndProvider(socialId, provider);
         SocialUser socialUser;
-        if(existingUser.isPresent()) {
-            // 이미 소셜유저 정보를 가진 사용자라면
+        if(existingUser.isPresent()){
+            //이미 소셜유저 정보를 가진 사용자라면...
             socialUser = existingUser.get();
             socialUser.setUsername(username);
             socialUser.setEmail(email);
             socialUser.setAvatarUrl(avatarUrl);
         }else{
             socialUser = new SocialUser();
+            socialUser.setSocialId(socialId);
             socialUser.setUsername(username);
             socialUser.setEmail(email);
             socialUser.setAvatarUrl(avatarUrl);
-            socialUser.setSocialId(socialId);
             socialUser.setProvider(provider);
         }
 

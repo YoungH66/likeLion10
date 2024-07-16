@@ -1,11 +1,9 @@
 package org.example.jwtexam.service;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import org.example.jwtexam.repository.RoleRepository;
 import org.example.jwtexam.domain.Role;
 import org.example.jwtexam.domain.User;
-import org.example.jwtexam.repository.RoleRepository;
 import org.example.jwtexam.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

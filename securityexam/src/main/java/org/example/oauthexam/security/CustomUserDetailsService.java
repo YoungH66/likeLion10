@@ -1,12 +1,12 @@
 package org.example.oauthexam.security;
 
 import lombok.RequiredArgsConstructor;
-import org.example.zizonsecurity.domain.User;
-import org.example.zizonsecurity.repository.UserRepository;
+import org.example.oauthexam.domain.User;
+import org.example.oauthexam.repository.UserRepository;
+import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.stereotype.Service;
 
 @Service

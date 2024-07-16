@@ -1,5 +1,6 @@
 package org.example.securityexam2;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +23,8 @@ public class SecurityConfig {
                 .formLogin(Customizer.withDefaults());
         http
                 .rememberMe(rememberMe ->rememberMe
-                        .rememberMeParameter("remember")
-//                        .tokenValiditySeconds(300)
+//                        .rememberMeParameter("remember")
+                        .tokenValiditySeconds(60)
                 );
 
 

@@ -25,8 +25,8 @@ public class SecurityConfig {
         http
                 .formLogin(formLogin ->formLogin
 //                        .loginPage("/loginForm")   //시큐리티기본으로 제공하는 페이지가 아니고, 사용자가 원하는 로그인페이지로 이동할수있게 설정
-                                .defaultSuccessUrl("/success")
-                                .failureUrl("/fail")
+                        .defaultSuccessUrl("/success")
+                        .failureUrl("/fail")
                                 .successHandler((request, response, authentication) -> {
                                     log.info("authentication  :: "+ authentication.getName());
                                     response.sendRedirect("/success");
@@ -38,23 +38,23 @@ public class SecurityConfig {
 //                        .usernameParameter("userId")
 //                        .passwordParameter("passwd")
 //                        .loginProcessingUrl("/login_p")
-                                .permitAll() //loginPage에 대한 요청은 누구나 요청 할 수 있도록!!
+                        .permitAll() //loginPage에 대한 요청은 누구나 요청 할 수 있도록!!
                 );
         //logout 이 진행될때 기본적으로 세션을 무효화시키고, 인증토큰 삭제, 쿠키정보삭제하고, 로그인페이지로 리다이렉트 하는것이 기본설정!!
         http
                 .logout(logout -> logout
 //                        .logoutUrl("/log_out")
-                                .logoutSuccessUrl("/login")
-                                .addLogoutHandler((request, response, authentication) -> {
-                                    log.info("addLogoutHandler ");
-                                    HttpSession session = request.getSession();
-                                    session.invalidate();
-                                })
-                                .logoutSuccessHandler((request, response, authentication) -> {
-                                    log.info("logoutSuccessHandler ");
-                                    response.sendRedirect("/logout");
-                                })
-                                .deleteCookies("remember-me")
+                        .logoutSuccessUrl("/login")
+                        .addLogoutHandler((request, response, authentication) -> {
+                            log.info("addLogoutHandler ");
+                            HttpSession session = request.getSession();
+                            session.invalidate();
+                        })
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            log.info("logoutSuccessHandler ");
+                            response.sendRedirect("/logout");
+                        })
+                        .deleteCookies("remember-me")
                 );
 
 
