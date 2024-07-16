@@ -35,13 +35,13 @@ public class UserController {
             userService.registerUser(user);
         } catch (RuntimeException e) {
             result.rejectValue("username", "error.user", e.getMessage());
-            return "register";
+            return "user/register";
         }
-        return "redirect:/login";
+        return "redirect:/user/login";
     }
 
     @GetMapping("/login")
     public String showLoginForm() {
-        return "login";
+        return "user/login";
     }
 }

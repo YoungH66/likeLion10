@@ -6,8 +6,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      # ?? ????.. ??? none?? validate? ???
-      ddl-auto: update
+      ddl-auto: validate  # ???? ?? ?????? validate? ??
     show-sql: true
     properties:
       hibernate:
@@ -20,4 +19,3 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-

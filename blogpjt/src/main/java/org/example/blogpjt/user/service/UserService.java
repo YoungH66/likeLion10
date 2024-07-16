@@ -1,41 +1,33 @@
 package org.example.blogpjt.user.service;
 
+import lombok.RequiredArgsConstructor;
+import org.example.blogpjt.user.domain.Role;
 import org.example.blogpjt.user.domain.User;
+import org.example.blogpjt.user.repository.RoleRepository;
 import org.example.blogpjt.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
+    @Transactional
     public User registerUser(User user) {
-        if (userRepository.existsByUsername(user.getUsername())) {
-            throw new RuntimeException("Username already exists");
-        }
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Email already exists");
-        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRegistrationDate(LocalDateTime.now());
+
+        Role userRole = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        user.getRoles().add(userRole);
+
         return userRepository.save(user);
-    }
-
-    public boolean checkUsernameAvailability(String username) {
-        return !userRepository.existsByUsername(username);
-    }
-
-    public boolean checkEmailAvailability(String email) {
-        return !userRepository.existsByEmail(email);
     }
 }
