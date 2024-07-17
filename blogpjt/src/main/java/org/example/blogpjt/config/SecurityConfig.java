@@ -15,40 +15,35 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
     @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepository) {
-        return username -> userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, UserDetailsService userDetailsService) throws Exception {
+        http
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers("/", "/loginform", "/registerform", "/userreg", "/api/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/loginform")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/welcome")
+                        .permitAll()
+                )
+                .rememberMe(rememberMe -> rememberMe
+                        .key("uniqueAndSecret")
+                        .tokenValiditySeconds(86400) // 1일
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/")
+                        .permitAll()
+                )
+                .userDetailsService(userDetailsService);
+        return http.build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, UserDetailsService userDetailsService) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())  // CSRF 보호 비활성화 (API 서버의 경우)
-                .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/", "/register", "/login", "/welcome").permitAll()  // 이 경로들은 모든 사용자에게 허용
-                        .anyRequest().authenticated()  // 그 외의 요청은 인증 필요
-                )
-                .formLogin(form -> form
-                        .loginPage("/login")  // 커스텀 로그인 페이지 경로
-                        .defaultSuccessUrl("/welcome", true)  // 로그인 성공 후 리다이렉트 경로
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/")  // 로그아웃 성공 후 리다이렉트 경로
-                        .permitAll()
-                )
-                .userDetailsService(userDetailsService)
-        ;
-
-        return http.build();
     }
 }

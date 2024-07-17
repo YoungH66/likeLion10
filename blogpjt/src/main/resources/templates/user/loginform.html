@@ -2,10 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Login</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <h2>Login</h2>
-<form th:action="@{user/login}" method="post">
+<form id="loginForm" action="/login" method="post">
     <div>
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
@@ -16,5 +17,15 @@
     </div>
     <button type="submit">Login</button>
 </form>
+<a href="/registerform">Register</a>
+
+<script>
+    $(document).ready(function() {
+        $('#loginForm').submit(function(e) {
+            e.preventDefault();
+            // 여기에 로그인 API 호출 로직 추가
+        });
+    });
+</script>
 </body>
 </html>

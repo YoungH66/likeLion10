@@ -14,35 +14,42 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     @Transactional
     public User registerUser(User user) {
+        Optional<Role> userRole = roleRepository.findByName("USER");
+        user.setRoles(Collections.singleton(userRole.orElseThrow(() -> new RuntimeException("Role not found"))));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRegistrationDate(LocalDateTime.now());
-
-        Role userRole = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        user.getRoles().add(userRole);
-
         return userRepository.save(user);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPassword())
-                .roles("USER")  // 또는 데이터베이스에서 가져온 실제 역할
+                .roles("USER")
                 .build();
+    }
+
+    public boolean isUsernameExists(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    public boolean isEmailExists(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

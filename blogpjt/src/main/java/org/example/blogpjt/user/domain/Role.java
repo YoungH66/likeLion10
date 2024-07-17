@@ -2,10 +2,11 @@ package org.example.blogpjt.user.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "roles")
-@Getter
+@Getter@Setter
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,5 +15,4 @@ public class Role {
     @Column(nullable = false, unique = true, length = 50)
     private String name;
 
-    // getters, setters, constructors
 }

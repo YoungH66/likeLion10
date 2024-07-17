@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h2>Register</h2>
+<form id="registerForm" action="/userreg" method="post">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+    <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <button type="submit">Register</button>
+</form>
+
+<script>
+    $(document).ready(function() {
+        $('#registerForm').submit(function(e) {
+            e.preventDefault();
+            if (validateForm()) {
+                checkDuplicates();
+            }
+        });
+
+        function validateForm() {
+            // 여기에 JavaScript 검증 로직 추가
+            return true;
+        }
+
+        function checkDuplicates() {
+            $.ajax({
+                url: '/api/check-username',
+                method: 'GET',
+                data: { username: $('#username').val() },
+                success: function(response) {
+                    if (!response.exists) {
+                        checkEmail();
+                    } else {
+                        alert('Username already exists');
+                    }
+                }
+            });
+        }
+
+        function checkEmail() {
+            $.ajax({
+                url: '/api/check-email',
+                method: 'GET',
+                data: { email: $('#email').val() },
+                success: function(response) {
+                    if (!response.exists) {
+                        $('#registerForm')[0].submit();
+                    } else {
+                        alert('Email already exists');
+                    }
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

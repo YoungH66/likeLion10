@@ -8,5 +8,8 @@
 <p th:if="${user != null}" th:text="'Hello, ' + ${user.username} + '!'"></p>
 <p>You have successfully logged in.</p>
 <a href="/">Go to Home Page</a>
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
 </body>
 </html>

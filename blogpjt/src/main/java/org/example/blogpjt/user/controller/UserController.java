@@ -17,44 +17,39 @@ import jakarta.validation.Valid;
 
 @Controller
 public class UserController {
-    private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    private UserService userService;
+
+    @GetMapping("/")
+    public String showMainPage() {
+        return "welcome";
     }
 
-    @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new User());
-        return "user/register";
+    @GetMapping("/loginform")
+    public String showLoginForm() {
+        return "user/loginform";
     }
 
-    @PostMapping("/register")
-    public String registerUser(@ModelAttribute("user") @Valid User user, BindingResult result, RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            return "user/register";
+    @GetMapping("/registerform")
+    public String showRegisterForm() {
+        return "user/registerform";
+    }
+
+    @PostMapping("/userreg")
+    public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "registerform";
         }
         try {
-            userService.registerUser(user);
-            redirectAttributes.addFlashAttribute("successMessage", "Registration successful. Please log in.");
-            return "redirect:/login";  // 수정된 부분
-        } catch (RuntimeException e) {
-            result.rejectValue("username", "error.user", e.getMessage());
-            return "user/register";
+            userService.registerUser(user);  // 이 부분이 실행되는지 확인
+            // 성공 로그 추가
+            System.out.println("User registered successfully: " + user.getUsername());
+            return "redirect:/loginform";
+        } catch (Exception e) {
+            // 예외 로그 추가
+            System.err.println("Error registering user: " + e.getMessage());
+            return "registerform";
         }
-    }
-
-    @GetMapping("/login")
-    public String showLoginForm() {
-        return "user/login";
-    }
-
-    @GetMapping("/welcome")
-    public String showWelcomePage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        if (userDetails != null) {
-            model.addAttribute("user", userDetails);
-        }
-        return "welcome";
     }
 }
