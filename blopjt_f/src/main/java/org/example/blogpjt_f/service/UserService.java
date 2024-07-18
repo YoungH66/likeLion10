@@ -38,6 +38,11 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
+    // 필요한 경우 사용자 저장 메서드 추가
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
     public boolean isUsernameExists(String username) {
         if (username == null || username.trim().isEmpty()) {
             return false;

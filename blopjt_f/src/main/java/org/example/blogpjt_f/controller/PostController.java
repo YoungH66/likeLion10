@@ -1,5 +1,6 @@
 package org.example.blogpjt_f.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.blogpjt_f.entity.Post;
 import org.example.blogpjt_f.entity.User;
 import org.example.blogpjt_f.service.PostService;
@@ -8,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
 @Controller
 @RequestMapping("/posts")
+@Slf4j
 public class PostController {
     @Autowired
     private PostService postService;
@@ -26,12 +29,24 @@ public class PostController {
     }
 
     @PostMapping("/new")
-    public String createPost(@ModelAttribute Post post, Principal principal) {
-        String username = principal.getName();
-        User currentUser = userService.getUserByUsername(username);
-        post.setAuthor(currentUser);
-        postService.createPost(post);
-        return "redirect:/posts";
+    public String createPost(@ModelAttribute Post post, Principal principal, RedirectAttributes redirectAttributes) {
+        try {
+            log.info("Creating new post: {}", post);
+            log.info("Principal name: {}", principal.getName());
+
+            String username = principal.getName();
+            User currentUser = userService.getUserByUsername(username);
+            log.info("Current user: {}", currentUser);
+
+            post.setAuthor(currentUser);
+            Post savedPost = postService.createPost(post);
+            log.info("Saved post: {}", savedPost);
+            return "redirect:/posts";
+        } catch (Exception e) {
+            log.error("Error creating post", e);
+            redirectAttributes.addFlashAttribute("error", "An error occurred while creating the post.");
+            return "redirect:/posts/new";
+        }
     }
 
     @GetMapping
