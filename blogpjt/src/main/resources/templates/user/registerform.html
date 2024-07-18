@@ -3,54 +3,99 @@
 <head>
     <title>Register</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .error { color: red; }
+    </style>
 </head>
 <body>
 <h2>Register</h2>
-<form id="registerForm" action="/userreg" method="post">
+<form id="registerForm">
     <div>
-        <label for="username">Username:</label>
+        <label for="username">Username : </label>
         <input type="text" id="username" name="username" required>
+
     </div>
     <div>
-        <label for="name">Name:</label>
+        <label for="name">Name : </label>
         <input type="text" id="name" name="name" required>
+
     </div>
     <div>
-        <label for="email">Email:</label>
+        <label for="email">Email : </label>
         <input type="email" id="email" name="email" required>
+
     </div>
     <div>
-        <label for="password">Password:</label>
+        <label for="password">Password : </label>
         <input type="password" id="password" name="password" required>
+
     </div>
     <button type="submit">Register</button>
 </form>
+<div id="message"></div>
 
 <script>
     $(document).ready(function() {
         $('#registerForm').submit(function(e) {
             e.preventDefault();
             if (validateForm()) {
-                checkDuplicates();
+                registerUser();
             }
         });
 
         function validateForm() {
-            // 여기에 JavaScript 검증 로직 추가
-            return true;
+            let isValid = true;
+
+            // Username validation
+            if ($('#username').val().length < 3) {
+                $('#usernameError').text('Username must be at least 3 characters long');
+                isValid = false;
+            } else {
+                $('#usernameError').text('');
+            }
+
+            // Name validation
+            if ($('#name').val().length < 2) {
+                $('#nameError').text('Name must be at least 2 characters long');
+                isValid = false;
+            } else {
+                $('#nameError').text('');
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test($('#email').val())) {
+                $('#emailError').text('Please enter a valid email address');
+                isValid = false;
+            } else {
+                $('#emailError').text('');
+            }
+
+            // Password validation
+            if ($('#password').val().length < 6) {
+                $('#passwordError').text('Password must be at least 6 characters long');
+                isValid = false;
+            } else {
+                $('#passwordError').text('');
+            }
+
+            return isValid;
         }
 
-        function checkDuplicates() {
+        function registerUser() {
             $.ajax({
                 url: '/api/check-username',
                 method: 'GET',
                 data: { username: $('#username').val() },
                 success: function(response) {
-                    if (!response.exists) {
-                        checkEmail();
+                    if (response.exists) {
+                        $('#usernameError').text('Username already exists');
                     } else {
-                        alert('Username already exists');
+                        checkEmail();
                     }
+                },
+                error: function() {
+                    $('#message').text('An error occurred. Please try again.').addClass('error');
                 }
             });
         }
@@ -61,11 +106,31 @@
                 method: 'GET',
                 data: { email: $('#email').val() },
                 success: function(response) {
-                    if (!response.exists) {
-                        $('#registerForm')[0].submit();
+                    if (response.exists) {
+                        $('#emailError').text('Email already exists');
                     } else {
-                        alert('Email already exists');
+                        submitRegistration();
                     }
+                },
+                error: function() {
+                    $('#message').text('An error occurred. Please try again.').addClass('error');
+                }
+            });
+        }
+
+        function submitRegistration() {
+            $.ajax({
+                url: '/userreg',
+                method: 'POST',
+                data: $('#registerForm').serialize(),
+                success: function() {
+                    $('#message').text('Registration successful! Redirecting to login page...').removeClass('error');
+                    setTimeout(function() {
+                        window.location.href = '/loginform';
+                    }, 2000);
+                },
+                error: function(xhr) {
+                    $('#message').text('Registration failed: ' + xhr.responseText).addClass('error');
                 }
             });
         }

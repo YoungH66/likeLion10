@@ -26,11 +26,29 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public User registerUser(User user) {
-        Optional<Role> userRole = roleRepository.findByName("USER");
-        user.setRoles(Collections.singleton(userRole.orElseThrow(() -> new RuntimeException("Role not found"))));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRegistrationDate(LocalDateTime.now());
-        return userRepository.save(user);
+        try {
+            if (userRepository.existsByUsername(user.getUsername())) {
+                throw new RuntimeException("Username already exists");
+            }
+            if (userRepository.existsByEmail(user.getEmail())) {
+                throw new RuntimeException("Email already exists");
+            }
+
+            Role userRole = roleRepository.findByName("USER")
+                    .orElseThrow(() -> new RuntimeException("Required USER role not found"));
+
+            user.setRoles(Collections.singleton(userRole));
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setRegistrationDate(LocalDateTime.now());
+
+            User savedUser = userRepository.save(user);
+            System.out.println("User saved to database: " + savedUser.getUsername());
+            return savedUser;
+        } catch (Exception e) {
+            System.err.println("Error in registerUser: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("User registration failed", e);
+        }
     }
 
     @Override

@@ -3,6 +3,9 @@
 <head>
     <title>Login</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .error { color: red; }
+    </style>
 </head>
 <body>
 <h2>Login</h2>
@@ -17,13 +20,34 @@
     </div>
     <button type="submit">Login</button>
 </form>
+<div id="message"></div>
 <a href="/registerform">Register</a>
 
 <script>
     $(document).ready(function() {
         $('#loginForm').submit(function(e) {
             e.preventDefault();
-            // 여기에 로그인 API 호출 로직 추가
+            var formData = {
+                username: $('#username').val(),
+                password: $('#password').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/login',
+                data: formData,
+                success: function(response) {
+                    $('#message').text('Login successful!').removeClass('error');
+                    window.location.href = '/welcome';
+                },
+                error: function(xhr, status, error) {
+                    if (xhr.status === 401) {
+                        $('#message').text('Invalid username or password.').addClass('error');
+                    } else {
+                        $('#message').text('An error occurred. Please try again.').addClass('error');
+                    }
+                }
+            });
         });
     });
 </script>

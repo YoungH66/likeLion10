@@ -23,6 +23,11 @@ public class UserController {
 
     @GetMapping("/")
     public String showMainPage() {
+        return "index";
+    }
+
+    @GetMapping("/welcome")
+    public String welcome() {
         return "welcome";
     }
 
@@ -37,19 +42,18 @@ public class UserController {
     }
 
     @PostMapping("/userreg")
-    public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+    public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "registerform";
+            return "user/registerform";
         }
         try {
-            userService.registerUser(user);  // 이 부분이 실행되는지 확인
-            // 성공 로그 추가
+            userService.registerUser(user);
             System.out.println("User registered successfully: " + user.getUsername());
             return "redirect:/loginform";
-        } catch (Exception e) {
-            // 예외 로그 추가
+        } catch (RuntimeException e) {
             System.err.println("Error registering user: " + e.getMessage());
-            return "registerform";
+            model.addAttribute("error", e.getMessage());
+            return "user/registerform";
         }
     }
 }

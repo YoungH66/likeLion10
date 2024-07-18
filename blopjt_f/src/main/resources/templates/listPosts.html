@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Blog Posts</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header>
+    <h1>Blog Posts</h1>
+    <nav>
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/posts/new}">Create New Post</a>
+    </nav>
+</header>
+<main>
+    <div th:if="${posts.empty}">
+        <p>No posts available.</p>
+    </div>
+    <div th:each="post : ${posts}">
+        <article>
+            <h2><a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">Post Title</a></h2>
+            <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">Creation Date</p>
+            <p th:text="${#strings.abbreviate(post.content, 200)}">Post Content</p>
+        </article>
+    </div>
+</main>
+<script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>
