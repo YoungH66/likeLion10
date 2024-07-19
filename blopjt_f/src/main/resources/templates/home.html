@@ -3,19 +3,20 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Blog Home</title>
+    <title>Blog</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 <header>
-    <h1>Welcome to Our Blog</h1>
+    <h1>Welcome</h1>
     <nav>
         <ul>
             <li><a th:href="@{/}">Home</a></li>
             <li><a th:href="@{/posts}">All Posts</a></li>
-            <li sec:authorize="isAnonymous()"><a th:href="@{/login}">Login</a></li>
-            <li sec:authorize="isAnonymous()"><a th:href="@{/signup}">Sign Up</a></li>
             <li sec:authorize="isAuthenticated()"><a th:href="@{/posts/new}">Create Post</a></li>
+            <li sec:authorize="isAuthenticated()"><a th:href="@{/posts/my-posts}">My Posts</a></li>
+            <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
+            <li sec:authorize="!isAuthenticated()"><a th:href="@{/signup}">Sign Up</a></li>
             <li sec:authorize="isAuthenticated()">
                 <form th:action="@{/logout}" method="post">
                     <button type="submit">Logout</button>
@@ -25,12 +26,8 @@
     </nav>
 </header>
 
-<main>
-    <h2>Recent Posts</h2>
-    <!-- 여기에 최근 게시물 목록을 표시할 수 있습니다 -->
-    <p>No posts yet. Stay tuned!</p>
-
-    <a th:href="@{/posts}" class="btn">View All Posts</a>
+<main th:fragment="content">
+    <!-- 각 페이지의 내용이 여기에 들어갑니다 -->
 </main>
 
 <footer>

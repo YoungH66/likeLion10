@@ -36,7 +36,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/", "/home", "/signup", "/login", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/posts/new", "/posts/*/edit", "/posts/*/delete").authenticated()
+                        .requestMatchers("/posts/new", "/posts/*/edit", "/posts/*/delete", "/posts/my-posts").authenticated()
                         .requestMatchers("/posts", "/posts/*").permitAll()
                         .anyRequest().authenticated()
                 )

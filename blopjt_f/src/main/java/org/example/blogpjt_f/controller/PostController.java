@@ -6,10 +6,10 @@ import org.example.blogpjt_f.entity.User;
 import org.example.blogpjt_f.service.PostService;
 import org.example.blogpjt_f.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.List;
@@ -49,11 +49,16 @@ public class PostController {
     }
 
     @GetMapping("/my-posts")
-    public String listMyPosts(Principal principal, Model model) {
-        User currentUser = userService.getUserByUsername(principal.getName());
+    public String listMyPosts(Model model, Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/login";  // 로그인 페이지로 리다이렉트
+        }
+
+        String username = authentication.getName();
+        User currentUser = userService.getUserByUsername(username);
         List<Post> posts = postService.getPostsByUser(currentUser);
         model.addAttribute("posts", posts);
-        return "myPost";
+        return "myPosts";
     }
 
     @GetMapping("/{id}")
