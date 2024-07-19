@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Blog Posts</title>
+    <title>My Posts</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
-<h1>Blog Posts</h1>
-<div>
-    <a th:href="@{/posts(sort='latest')}" th:class="${currentSort == 'latest'} ? 'active' : ''">Latest</a>
-    <a th:href="@{/posts(sort='oldest')}" th:class="${currentSort == 'oldest'} ? 'active' : ''">Oldest</a>
-</div>
+<h1>My Posts</h1>
 <div th:each="post : ${posts}">
     <h2><a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">Post Title</a></h2>
     <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">Creation Date</p>
     <p th:text="${#strings.abbreviate(post.content, 200)}">Post Content</p>
+    <p th:text="${post.published ? 'Published' : 'Draft'}">Status</p>
 </div>
 
 </body>

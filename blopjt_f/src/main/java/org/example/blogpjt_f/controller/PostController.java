@@ -53,7 +53,7 @@ public class PostController {
         User currentUser = userService.getUserByUsername(principal.getName());
         List<Post> posts = postService.getPostsByUser(currentUser);
         model.addAttribute("posts", posts);
-        return "myPosts";
+        return "myPost";
     }
 
     @GetMapping("/{id}")
