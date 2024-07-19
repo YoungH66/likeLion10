@@ -29,24 +29,11 @@ public class PostController {
     }
 
     @PostMapping("/new")
-    public String createPost(@ModelAttribute Post post, Principal principal, RedirectAttributes redirectAttributes) {
-        try {
-            log.info("Creating new post: {}", post);
-            log.info("Principal name: {}", principal.getName());
-
-            String username = principal.getName();
-            User currentUser = userService.getUserByUsername(username);
-            log.info("Current user: {}", currentUser);
-
-            post.setAuthor(currentUser);
-            Post savedPost = postService.createPost(post);
-            log.info("Saved post: {}", savedPost);
-            return "redirect:/posts";
-        } catch (Exception e) {
-            log.error("Error creating post", e);
-            redirectAttributes.addFlashAttribute("error", "An error occurred while creating the post.");
-            return "redirect:/posts/new";
-        }
+    public String createPost(@ModelAttribute Post post, Principal principal) {
+        String username = principal.getName();
+        User user = userService.getUserByUsername(username);
+        Post savedPost = postService.createPost(post, user.getId());
+        return "redirect:/posts/" + savedPost.getId();
     }
 
     @GetMapping
