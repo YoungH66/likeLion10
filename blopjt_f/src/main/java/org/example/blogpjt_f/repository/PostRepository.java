@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
+    List<Post> findByPublishedTrueOrderByCreatedAtDesc();
+    List<Post> findByPublishedTrueOrderByCreatedAtAsc();
+    List<Post> findByPublishedTrue();
     List<Post> findByAuthorOrderByCreatedAtDesc(User author);
-    List<Post> findByPublishedOrderByCreatedAtDesc(boolean published);
 }

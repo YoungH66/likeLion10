@@ -23,6 +23,15 @@
             <p th:text="${#strings.abbreviate(post.content, 200)}">Post Content</p>
         </article>
     </div>
+    <div>
+        <a th:href="@{/posts(sort='latest')}" th:class="${currentSort == 'latest'} ? 'active' : ''">Latest</a>
+        <a th:href="@{/posts(sort='oldest')}" th:class="${currentSort == 'oldest'} ? 'active' : ''">Oldest</a>
+    </div>
+    <div th:each="post : ${posts}">
+        <h2><a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">Post Title</a></h2>
+        <p th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">Creation Date</p>
+        <p th:text="${#strings.abbreviate(post.content, 200)}">Post Content</p>
+    </div>
 </main>
 <script th:src="@{/js/scripts.js}"></script>
 </body>

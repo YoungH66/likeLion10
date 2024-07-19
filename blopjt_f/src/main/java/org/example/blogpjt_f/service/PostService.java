@@ -21,10 +21,7 @@ public class PostService {
     @Autowired
     private UserRepository userRepository;
 
-    public Post createPost(Post post, Long userId) {
-        User author = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        post.setAuthor(author);
+    public Post createPost(Post post) {
         return postRepository.save(post);
     }
 
@@ -33,8 +30,19 @@ public class PostService {
                 .orElseThrow(() -> new RuntimeException("Post not found"));
     }
 
-    public List<Post> getAllPublishedPosts() {
-        return postRepository.findByPublishedOrderByCreatedAtDesc(true);
+    public List<Post> getPostsByUser(User user) {
+        return postRepository.findByAuthorOrderByCreatedAtDesc(user);
+    }
+
+    public List<Post> getAllPublishedPosts(String sort) {
+        switch(sort) {
+            case "latest":
+                return postRepository.findByPublishedTrueOrderByCreatedAtDesc();
+            case "oldest":
+                return postRepository.findByPublishedTrueOrderByCreatedAtAsc();
+            default:
+                return postRepository.findByPublishedTrue();
+        }
     }
 
     public Post updatePost(Post post) {
@@ -44,4 +52,6 @@ public class PostService {
     public void deletePost(Long id) {
         postRepository.deleteById(id);
     }
+
+
 }

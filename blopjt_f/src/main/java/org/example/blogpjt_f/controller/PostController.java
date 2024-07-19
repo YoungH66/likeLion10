@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("/posts")
@@ -19,8 +20,17 @@ import java.security.Principal;
 public class PostController {
     @Autowired
     private PostService postService;
+
     @Autowired
     private UserService userService;
+
+    @GetMapping
+    public String listPosts(@RequestParam(defaultValue = "latest") String sort, Model model) {
+        List<Post> posts = postService.getAllPublishedPosts(sort);
+        model.addAttribute("posts", posts);
+        model.addAttribute("currentSort", sort);
+        return "listPosts";
+    }
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
@@ -29,17 +39,21 @@ public class PostController {
     }
 
     @PostMapping("/new")
-    public String createPost(@ModelAttribute Post post, Principal principal) {
+    public String createPost(@ModelAttribute Post post, @RequestParam(defaultValue = "true") boolean publish, Principal principal) {
         String username = principal.getName();
         User user = userService.getUserByUsername(username);
-        Post savedPost = postService.createPost(post, user.getId());
+        post.setPublished(publish);
+        post.setAuthor(user);
+        Post savedPost = postService.createPost(post);
         return "redirect:/posts/" + savedPost.getId();
     }
 
-    @GetMapping
-    public String listPosts(Model model) {
-        model.addAttribute("posts", postService.getAllPublishedPosts());
-        return "listPosts";
+    @GetMapping("/my-posts")
+    public String listMyPosts(Principal principal, Model model) {
+        User currentUser = userService.getUserByUsername(principal.getName());
+        List<Post> posts = postService.getPostsByUser(currentUser);
+        model.addAttribute("posts", posts);
+        return "myPosts";
     }
 
     @GetMapping("/{id}")
