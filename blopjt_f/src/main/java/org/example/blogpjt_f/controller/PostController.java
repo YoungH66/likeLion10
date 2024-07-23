@@ -1,11 +1,14 @@
 package org.example.blogpjt_f.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.example.blogpjt_f.entity.Comment;
 import org.example.blogpjt_f.entity.Post;
 import org.example.blogpjt_f.entity.User;
+import org.example.blogpjt_f.service.CommentService;
 import org.example.blogpjt_f.service.PostService;
 import org.example.blogpjt_f.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +20,16 @@ import java.util.List;
 @Controller
 @RequestMapping("/posts")
 @Slf4j
+
 public class PostController {
     @Autowired
     private PostService postService;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping
     public String listPosts(@RequestParam(defaultValue = "latest") String sort, Model model) {
@@ -62,8 +69,17 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public String viewPost(@PathVariable Long id, Model model) {
-        model.addAttribute("post", postService.getPostById(id));
+    public String viewPost(@PathVariable Long id,
+                           @RequestParam(defaultValue = "0") int page,
+                           Model model) {
+        Post post = postService.getPostById(id);
+        model.addAttribute("post", post);
+        if (post.isPublished()) {
+            Page<Comment> commentPage = commentService.getCommentsByPost(post, page, 10); // 10은 페이지 크기
+            model.addAttribute("comments", commentPage.getContent());
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", commentPage.getTotalPages());
+        }
         return "viewPost";
     }
 
